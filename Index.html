@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#103b2e">
+
+<title>بوابة المواطن الملكية | PeaceLand</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root {
+  --green: #103b2e;
+  --green2: #194b38;
+  --gold: #d7b56d;
+  --cream: #f6f2e8;
+  --white: #ffffff;
+  --text: #24372d;
+  --muted: #728076;
+  --border: #e3e6de;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, Tahoma, sans-serif;
+  background: var(--cream);
+  color: var(--text);
+}
+header {
+  color: white;
+  background: linear-gradient(125deg, #0a291f, #20563f);
+  border-bottom: 4px solid var(--gold);
+  padding: 22px 6%;
+}
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+.brand { display: flex; align-items: center; gap: 13px; }
+.crown { font-size: 38px; color: var(--gold); }
+.brand h1 { margin: 0; font-size: 23px; }
+.brand p { margin: 6px 0 0; font-size: 12px; color: #e8d9b1; }
+button, .btn {
+  border: none;
+  border-radius: 9px;
+  padding: 12px 18px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+}
+.language { background: var(--gold); color: var(--green); }
+.hero {
+  text-align: center;
+  max-width: 900px;
+  padding: 45px 20px 35px;
+  margin: auto;
+}
+.hero h2 { font-size: clamp(28px, 4vw, 43px); margin: 18px 0 12px; }
+.hero p { line-height: 1.9; color: var(--muted); }
+.badge {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 30px;
+  background: #eee2bd;
+  color: #5b481c;
+  font-size: 12px;
+}
+.container { max-width: 1100px; margin: auto; padding: 0 20px; }
+.section-title { color: var(--green); margin: 25px 0 18px; }
+.services {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+}
+.card, .panel {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 23px;
+  box-shadow: 0 5px 18px #173a2909;
+}
+.icon { font-size: 35px; }
+.card h3 { color: var(--green); }
+.card p { color: var(--muted); line-height: 1.8; font-size: 14px; }
+.primary { color: white; background: var(--green); }
+.primary:hover { background: var(--green2); }
+.card button { width: 100%; margin-top: 10px; }
+.panel { margin-top: 25px; }
+.notice {
+  padding: 14px 16px;
+  border-right: 4px solid var(--gold);
+  border-radius: 8px;
+  background: #fbf6e8;
+  line-height: 1.8;
+  font-size: 13px;
+  margin: 20px 0;
+}
+form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px;
+}
+label { display: block; font-weight: bold; font-size: 13px; margin-bottom: 7px; }
+input, select, textarea {
+  width: 100%;
+  border: 1px solid #d8dfd7;
+  border-radius: 9px;
+  padding: 12px;
+  font: inherit;
+  background: white;
+}
+textarea { min-height: 100px; resize: vertical; }
+.full { grid-column: 1 / -1; }
+.hidden { display: none !important; }
+.result {
+  padding: 15px;
+  margin-top: 18px;
+  background: #edf6ee;
+  border: 1px solid #c8dfcb;
+  border-radius: 10px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+.error {
+  background: #fff0ee;
+  border-color: #e8c5c0;
+}
+.small { font-size: 12px; color: var(--muted); line-height: 1.8; }
+footer {
+  margin-top: 45px;
+  padding: 28px 15px;
+  background: var(--green);
+  color: white;
+  text-align: center;
+  line-height: 2;
+}
+footer a { color: var(--gold); }
+a { color: var(--green); }
+@media(max-width:600px) {
+  form { grid-template-columns: 1fr; }
+  .full { grid-column: auto; }
+  .panel, .card { padding: 17px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <nav>
+    <div class="brand">
+      <div class="crown">♛</div>
+      <div>
+        <h1 data-ar="بوابة المواطن الملكية"
+            data-en="Royal Citizen Portal">بوابة المواطن الملكية</h1>
+        <p>THE KINGDOM OF PEACELAND</p>
+      </div>
+    </div>
+    <button class="language" id="languageButton" onclick="toggleLanguage()">
+      English
+    </button>
+  </nav>
+</header>
+
+<section class="hero">
+  <span class="badge"
+        data-ar="الخدمات الإلكترونية الملكية"
+        data-en="Royal Digital Services">الخدمات الإلكترونية الملكية</span>
+
+  <h2 data-ar="مرحبًا بك في بوابة المواطن"
+      data-en="Welcome to the Citizen Portal">
+    مرحبًا بك في بوابة المواطن
+  </h2>
+
+  <p data-ar="فضاء إلكتروني لتقديم المطالب ومتابعتها والتواصل مع الإدارة الملكية."
+     data-en="An online portal for submitting applications, tracking their status and communicating with the Royal Administration.">
+    فضاء إلكتروني لتقديم المطالب ومتابعتها والتواصل مع الإدارة الملكية.
+  </p>
+</section>
+
+<main class="container">
+
+  <div class="notice">
+    <strong data-ar="تنبيه:"
+            data-en="Notice:">تنبيه:</strong>
+    <span data-ar="هذا مشروع غير رسمي. الخدمات والوثائق المعروضة تجريبية ولا تُعدّ وثائق هوية أو سفر حكومية."
+          data-en="This is an unofficial project. Services and documents are demonstrations, not government identity or travel documents.">
+      هذا مشروع غير رسمي. الخدمات والوثائق المعروضة تجريبية ولا تُعدّ وثائق هوية أو سفر حكومية.
+    </span>
+  </div>
+
+  <h2 class="section-title"
+      data-ar="الخدمات المتاحة"
+      data-en="Available Services">الخدمات المتاحة</h2>
+
+  <section class="services">
+
+    <article class="card">
+      <div class="icon">🪪</div>
+      <h3 data-ar="بطاقة المواطن"
+          data-en="Citizen Card">بطاقة المواطن</h3>
+      <p data-ar="تقديم مطلب بطاقة رمزية ومتابعة الملف."
+         data-en="Submit a symbolic card application and track its status.">
+        تقديم مطلب بطاقة رمزية ومتابعة الملف.
+      </p>
+      <button class="primary" onclick="openForm('citizen_card')"
+              data-ar="تقديم مطلب"
+              data-en="Apply">تقديم مطلب</button>
+    </article>
+
+    <article class="card">
+      <div class="icon">📘</div>
+      <h3 data-ar="جواز السفر"
+          data-en="Passport">جواز السفر</h3>
+      <p data-ar="تسجيل مطلب وثيقة سفر رمزية ومتابعة حالته."
+         data-en="Submit a symbolic passport application and track its status.">
+        تسجيل مطلب وثيقة سفر رمزية ومتابعة حالته.
+      </p>
+      <button class="primary" onclick="openForm('passport')"
+              data-ar="تقديم مطلب"
+              data-en="Apply">تقديم مطلب</button>
+    </article>
+
+    <article class="card">
+      <div class="icon">👑</div>
+      <h3 data-ar="طلب الجنسية"
+          data-en="Citizenship Application">طلب الجنسية</h3>
+      <p data-ar="تقديم مطلب انتماء رمزي إلى المملكة."
+         data-en="Submit a symbolic membership application to the kingdom.">
+        تقديم مطلب انتماء رمزي إلى المملكة.
+      </p>
+      <button class="primary" onclick="openForm('citizenship')"
+              data-ar="تقديم مطلب"
+              data-en="Apply">تقديم مطلب</button>
+    </article>
+
+  </section>
+
+  <section id="applicationPanel" class="panel hidden">
+    <h2 id="formTitle" class="section-title">تقديم مطلب</h2>
+
+    <p class="small"
+       data-ar="استعمل بيانات تجريبية فقط. لا تدخل أرقام هوية حقيقية أو معلومات شخصية حساسة."
+       data-en="Use demonstration information only. Do not enter real ID numbers or sensitive personal information.">
+      استعمل بيانات تجريبية فقط. لا تدخل أرقام هوية حقيقية أو معلومات شخصية حساسة.
+    </p>
+
+    <form id="applicationForm">
+
+      <div>
+        <label for="firstName" data-ar="الاسم"
+               data-en="First name">الاسم</label>
+        <input id="firstName" maxlength="60" required autocomplete="off">
+      </div>
+
+      <div>
+        <label for="lastName" data-ar="اللقب"
+               data-en="Last name">اللقب</label>
+        <input id="lastName" maxlength="60" required autocomplete="off">
+      </div>
+
+      <div>
+        <label for="city" data-ar="المدينة"
+               data-en="City">المدينة</label>
+        <select id="city" required>
+          <option value="Royal Capital">العاصمة الملكية / Royal Capital</option>
+          <option value="Peace City">مدينة السلام / Peace City</option>
+          <option value="Golden City">المدينة الذهبية / Golden City</option>
+          <option value="Knowledge City">مدينة المعرفة / Knowledge City</option>
+          <option value="Coastal City">المدينة الساحلية / Coastal City</option>
+          <option value="Green Valley">الوادي الأخضر / Green Valley</option>
+          <option value="Industrial City">المدينة الصناعية / Industrial City</option>
+          <option value="Heritage City">مدينة التراث / Heritage City</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="category" data-ar="نوع المطلب"
+               data-en="Application type">نوع المطلب</label>
+        <select id="category" required>
+          <option value="citizen_card">بطاقة المواطن / Citizen Card</option>
+          <option value="passport">جواز السفر / Passport</option>
+          <option value="citizenship">طلب الجنسية / Citizenship</option>
+        </select>
+      </div>
+
+      <div class="full">
+        <label for="details" data-ar="تفاصيل إضافية"
+               data-en="Additional details">تفاصيل إضافية</label>
+        <textarea id="details" maxlength="1000"></textarea>
+      </div>
+
+      <div class="full">
+        <label>
+          <input id="confirmation" type="checkbox"
+                 required style="width:auto">
+          <span data-ar="أوافق على تقديم معلومات تجريبية وأفهم أن الخدمة غير رسمية."
+                data-en="I agree to submit demonstration information and understand this service is unofficial.">
+            أوافق على تقديم معلومات تجريبية وأفهم أن الخدمة غير رسمية.
+          </span>
+        </label>
+      </div>
+
+      <div class="full">
+        <button class="primary" id="submitButton" type="submit"
+                style="width:100%"
+                data-ar="إرسال المطلب"
+                data-en="Submit Application">إرسال المطلب</button>
+      </div>
+
+    </form>
+
+    <div id="submitResult" class="result hidden" aria-live="polite"></div>
+  </section>
+
+  <section class="panel">
+    <h2 class="section-title"
+        data-ar="متابعة مطلب"
+        data-en="Track an Application">متابعة مطلب</h2>
+
+    <p class="small"
+       data-ar="أدخل رقم المطلب لمتابعة حالته. يلزم استكمال إعداد التحقق من هوية صاحب المطلب قبل تفعيل عرض الملفات الشخصية."
+       data-en="Enter the application reference to check its status. Applicant verification must be configured before enabling access to personal application details.">
+      أدخل رقم المطلب لمتابعة حالته. يلزم استكمال إعداد التحقق من هوية صاحب المطلب قبل تفعيل عرض الملفات الشخصية.
+    </p>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <input id="trackingNumber" placeholder="PL-XXXXXXXXXX"
+             autocomplete="off" style="flex:1;min-width:200px">
+      <button class="primary" onclick="trackApplication()"
+              data-ar="التحقق من الحالة"
+              data-en="Check Status">التحقق من الحالة</button>
+    </div>
+
+    <div id="trackingResult" class="result hidden" aria-live="polite"></div>
+  </section>
+
+  <section class="panel">
+    <h2 class="section-title"
+        data-ar="حالة الاتصال"
+        data-en="Connection Status">حالة الاتصال</h2>
+    <p id="connectionStatus" aria-live="polite">
+      جاري التحقق من الاتصال...
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  <strong>♛ PEACELAND — ROYAL CITIZEN PORTAL</strong><br>
+  <a href="https://adem670.github.io/Kingdom-admin/"
+     data-ar="الإدارة الملكية"
+     data-en="Royal Administration">الإدارة الملكية</a>
+  &nbsp; | &nbsp;
+  <a href="https://endearing-axolotl-b97f7f.netlify.app/"
+     data-ar="الموقع الرئيسي"
+     data-en="Main Website">الموقع الرئيسي</a>
+</footer>
+
+<script>
+/*
+  ضع رابط مشروع Supabase ومفتاح anon/public الخاص به هنا.
+  لا تضع service_role key في هذا الملف.
+*/
+const SUPABASE_URL = "PASTE_YOUR_SUPABASE_PROJECT_URL_HERE";
+const SUPABASE_ANON_KEY = "PASTE_YOUR_SUPABASE_ANON_KEY_HERE";
+
+let db = null;
+let currentLanguage = "ar";
+let currentType = "citizen_card";
+
+const typeNames = {
+  citizen_card: { ar: "بطاقة المواطن", en: "Citizen Card" },
+  passport: { ar: "جواز السفر", en: "Passport" },
+  citizenship: { ar: "طلب الجنسية", en: "Citizenship Application" }
+};
+
+const statusNames = {
+  pending: { ar: "في انتظار المراجعة", en: "Pending review" },
+  under_review: { ar: "قيد المراجعة", en: "Under review" },
+  needs_information: { ar: "يتطلب معلومات إضافية", en: "More information required" },
+  approved: { ar: "تمت الموافقة", en: "Approved" },
+  rejected: { ar: "مرفوض", en: "Rejected" }
+};
+
+function toggleLanguage() {
+  currentLanguage = currentLanguage === "ar" ? "en" : "ar";
+
+  document.documentElement.lang = currentLanguage;
+  document.documentElement.dir = currentLanguage === "ar" ? "rtl" : "ltr";
+
+  document.querySelectorAll("[data-ar][data-en]").forEach(el => {
+    el.textContent = el.dataset[currentLanguage];
+  });
+
+  document.getElementById("languageButton").textContent =
+    currentLanguage === "ar" ? "English" : "العربية";
+
+  document.getElementById("formTitle").textContent =
+    typeNames[currentType][currentLanguage];
+}
+
+function openForm(type) {
+  currentType = type;
+  document.getElementById("category").value = type;
+  document.getElementById("formTitle").textContent =
+    typeNames[type][currentLanguage];
+
+  document.getElementById("applicationPanel").classList.remove("hidden");
+  document.getElementById("submitResult").classList.add("hidden");
+
+  document.getElementById("applicationPanel")
+    .scrollIntoView({ behavior: "smooth" });
+}
+
+function showMessage(element, message, isError = false) {
+  element.textContent = message;
+  element.classList.remove("hidden");
+  element.classList.toggle("error", isError);
+}
+
+function initSupabase() {
+  const configured =
+    SUPABASE_URL.startsWith("https://") &&
+    !SUPABASE_URL.includes("PASTE_") &&
+    SUPABASE_ANON_KEY.length > 20 &&
+    !SUPABASE_ANON_KEY.includes("PASTE_");
+
+  if (!configured) {
+    document.getElementById("connectionStatus").textContent =
+      currentLanguage === "ar"
+        ? "لم يتم إعداد الاتصال بعد. أضف رابط مشروع Supabase ومفتاح anon/public."
+        : "Connection is not configured yet. Add your Supabase URL and anon/public key.";
+    return;
+  }
+
+  db = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
+
+  document.getElementById("connectionStatus").textContent =
+    currentLanguage === "ar"
+      ? "تم إعداد عميل الاتصال. جارٍ التحقق من صلاحية الوصول..."
+      : "Client configured. Checking database access...";
+}
+
+document.getElementById("applicationForm").addEventListener("submit", async event => {
+  event.preventDefault();
+
+  const result = document.getElementById("submitResult");
+  const button = document.getElementById("submitButton");
+
+  if (!db) {
+    showMessage(
+      result,
+      currentLanguage === "ar"
+        ? "الموقع غير مربوط بقاعدة البيانات بعد. أضف إعدادات Supabase أولًا."
+        : "The portal is not connected to the database yet. Configure Supabase first.",
+      true
+    );
+    return;
+  }
+
+  const application = {
+    applicant_name: document.getElementById("firstName").value.trim(),
+    applicant_surname: document.getElementById("lastName").value.trim(),
+    city: document.getElementById("city").value,
+    application_type: document.getElementById("category").value,
+    details: document.getElementById("details").value.trim(),
+    status: "pending"
+  };
+
+  if (!application.applicant_name || !application.applicant_surname) return;
+
+  button.disabled = true;
+  button.textContent = currentLanguage === "ar" ? "جارٍ الإرسال..." : "Submitting...";
+
+  try {
+    const { data, error } = await db
+      .from("citizen_applications")
+      .insert(application)
+      .select("reference_number")
+      .single();
+
+    if (error) throw error;
+
+    showMessage(
+      result,
+      currentLanguage === "ar"
+        ? "تم إرسال المطلب إلى قاعدة البيانات بنجاح. رقم المطلب: " +
+          data.reference_number +
+          ". احتفظ بالرقم للمتابعة."
+        : "Application submitted successfully. Reference: " +
+          data.reference_number + ". Save this reference."
+    );
+
+    document.getElementById("applicationForm").reset();
+
+  } catch (error) {
+    console.error(error);
+
+    showMessage(
+      result,
+      currentLanguage === "ar"
+        ? "تعذر إرسال المطلب. تحقق من الجدول وصلاحيات Supabase. التفاصيل: " +
+          error.message
+        : "Could not submit the application. Check the Supabase table and policies. Details: " +
+          error.message,
+      true
+    );
+  } finally {
+    button.disabled = false;
+    button.textContent = currentLanguage === "ar"
+      ? "إرسال المطلب"
+      : "Submit Application";
+  }
+});
+
+async function trackApplication() {
+  const result = document.getElementById("trackingResult");
+  const ref = document.getElementById("trackingNumber")
+    .value.trim().toUpperCase();
+
+  if (!ref) {
+    showMessage(
+      result,
+      currentLanguage === "ar"
+        ? "أدخل رقم المطلب أولًا."
+        : "Enter an application reference first.",
+      true
+    );
+    return;
+  }
+
+  /*
+    لا نسترجع ملفات شخصية بالرقم وحده.
+    يلزم إضافة آلية تحقق خاصة بصاحب المطلب قبل تفعيل المتابعة.
+  */
+  showMessage(
+    result,
+    currentLanguage === "ar"
+      ? "رقم المطلب: " + ref +
+        ". المتابعة الشخصية لم تُفعّل بعد؛ يلزم إعداد تحقق آمن من صاحب الملف."
+      : "Reference: " + ref +
+        ". Personal tracking is not enabled yet; secure applicant verification is required."
+  );
+}
+
+initSupabase();
+</script>
+
+</body>
+</html>
