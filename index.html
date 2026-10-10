@@ -1,732 +1,635 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#123d2b">
-<title>Citizen Portal | Kingdom of PeaceLand</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>بوابة المواطن | مملكة PeaceLand</title>
 
-<style>
-:root {
-  --green: #123d2b;
-  --green2: #1d563d;
-  --gold: #d7b45a;
-  --cream: #f7f3e8;
-  --ink: #26372c;
-  --muted: #68766c;
-  --border: #e1e5dc;
-}
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js"></script>
 
-* { box-sizing: border-box; }
+  <style>
+    :root {
+      --green: #123c2c;
+      --green2: #1e5a40;
+      --gold: #d5b46a;
+      --cream: #f8f5eb;
+      --white: #ffffff;
+      --text: #24352c;
+      --muted: #6c776f;
+    }
 
-body {
-  margin: 0;
-  font-family: Arial, Tahoma, sans-serif;
-  background: var(--cream);
-  color: var(--ink);
-  line-height: 1.7;
-}
+    * { box-sizing: border-box; }
 
-header {
-  background: linear-gradient(130deg, #123d2b, #071e15);
-  color: white;
-  border-bottom: 4px solid var(--gold);
-  padding: 20px;
-}
+    body {
+      margin: 0;
+      font-family: Arial, Tahoma, sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      line-height: 1.8;
+    }
 
-.header-inner {
-  max-width: 1120px;
-  margin: auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 15px;
-  flex-wrap: wrap;
-}
+    header {
+      background: linear-gradient(135deg, #103426, #205b40);
+      color: white;
+      text-align: center;
+      padding: 32px 16px;
+      border-bottom: 4px solid var(--gold);
+    }
 
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 13px;
-}
+    .crown {
+      font-size: 42px;
+      color: var(--gold);
+    }
 
-.emblem {
-  height: 58px;
-  width: 58px;
-  border: 2px solid var(--gold);
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  color: var(--gold);
-  font-size: 30px;
-  flex-shrink: 0;
-}
+    header h1 {
+      margin: 0;
+      font-size: 27px;
+    }
 
-h1 { font-size: 22px; margin: 0; }
+    header p { margin: 5px 0; }
 
-.brand p {
-  font-size: 13px;
-  margin: 3px 0;
-  color: #e9e1cc;
-}
+    nav {
+      background: #0b2b20;
+      text-align: center;
+      padding: 12px;
+    }
 
-button {
-  border: 0;
-  border-radius: 9px;
-  padding: 12px 17px;
-  font-size: 14px;
-  font-weight: bold;
-  cursor: pointer;
-}
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 12px;
+      display: inline-block;
+    }
 
-button:disabled {
-  opacity: .6;
-  cursor: wait;
-}
+    main {
+      max-width: 950px;
+      margin: 28px auto;
+      padding: 0 15px;
+    }
 
-#languageButton {
-  background: var(--gold);
-  color: #17251b;
-}
+    .card {
+      background: var(--white);
+      padding: 25px;
+      margin-bottom: 24px;
+      border-radius: 14px;
+      border: 1px solid #e5dfcf;
+      box-shadow: 0 5px 18px #183d2b0c;
+    }
 
-main {
-  max-width: 1120px;
-  margin: 28px auto;
-  padding: 0 16px;
-}
+    h2 {
+      color: var(--green);
+      border-right: 4px solid var(--gold);
+      padding-right: 12px;
+      margin-top: 0;
+    }
 
-.hero {
-  background: linear-gradient(120deg, #194c36, #0c2b1e);
-  color: white;
-  border-radius: 18px;
-  padding: 30px;
-  margin-bottom: 20px;
-}
+    label {
+      display: block;
+      font-weight: bold;
+      margin: 12px 0 5px;
+    }
 
-.hero h2 {
-  margin: 0 0 10px;
-  color: var(--gold);
-  font-size: 28px;
-}
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #cbd4cc;
+      border-radius: 8px;
+      font: inherit;
+      background: white;
+    }
 
-.hero p { margin: 0; }
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
 
-.notice {
-  padding: 13px 16px;
-  background: #fff7df;
-  border-right: 4px solid var(--gold);
-  border-radius: 8px;
-  margin: 18px 0;
-  font-size: 13px;
-}
+    button {
+      border: none;
+      border-radius: 8px;
+      padding: 12px 20px;
+      margin-top: 15px;
+      font: inherit;
+      font-weight: bold;
+      cursor: pointer;
+      background: var(--green);
+      color: white;
+    }
 
-html[dir="ltr"] .notice {
-  border-right: 0;
-  border-left: 4px solid var(--gold);
-}
+    button:hover { background: var(--green2); }
 
-.services {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 13px;
-  margin: 23px 0;
-}
+    button:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
 
-.service {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  text-align: center;
-  padding: 16px;
-}
+    .gold-button {
+      background: #b18b38;
+      color: #102d20;
+    }
 
-.service span { font-size: 27px; }
+    .notice {
+      background: #f4f0e3;
+      border-right: 4px solid var(--gold);
+      padding: 12px;
+      border-radius: 7px;
+      font-size: 14px;
+    }
 
-.service h3 {
-  font-size: 15px;
-  color: var(--green);
-  margin: 7px 0;
-}
+    .result {
+      margin-top: 18px;
+      padding: 15px;
+      border-radius: 8px;
+      background: #f2f5f1;
+      overflow-wrap: anywhere;
+    }
 
-.service p {
-  font-size: 12px;
-  color: var(--muted);
-  margin: 0;
-}
+    .hidden { display: none; }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
-}
+    .status {
+      display: inline-block;
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-weight: bold;
+      background: #e8e8e8;
+    }
 
-.card {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 15px;
-  padding: 22px;
-  box-shadow: 0 5px 18px #10271908;
-  min-width: 0;
-}
+    .status.approved {
+      background: #d9f3df;
+      color: #176b35;
+    }
 
-.card h2 {
-  font-size: 21px;
-  color: var(--green);
-  margin: 0 0 10px;
-}
+    .status.rejected {
+      background: #ffe1e1;
+      color: #9b2020;
+    }
 
-.card > p {
-  font-size: 14px;
-  color: var(--muted);
-}
+    .status.pending {
+      background: #fff0c9;
+      color: #775400;
+    }
 
-label {
-  display: block;
-  font-size: 14px;
-  font-weight: bold;
-  margin: 13px 0 5px;
-}
+    footer {
+      background: var(--green);
+      color: white;
+      text-align: center;
+      padding: 24px 15px;
+      margin-top: 40px;
+    }
 
-input, select, textarea {
-  display: block;
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #d4dbd2;
-  border-radius: 8px;
-  background: white;
-  color: var(--ink);
-  font: inherit;
-  font-size: 14px;
-}
+    footer small { color: #e9e1cd; }
 
-textarea {
-  min-height: 105px;
-  resize: vertical;
-}
+    /* قالب الوثيقة التي يتم تحويلها إلى PDF */
+    #pdfDocument {
+      display: none;
+      width: 720px;
+      max-width: 100%;
+      padding: 35px;
+      background: white;
+      color: #183c2b;
+      font-family: Arial, Tahoma, sans-serif;
+      line-height: 1.8;
+    }
 
-.primary {
-  background: var(--green);
-  color: white;
-  margin-top: 15px;
-}
+    .document-border {
+      border: 4px double #b99a50;
+      padding: 28px;
+      min-height: 700px;
+      text-align: center;
+    }
 
-.primary:hover { background: var(--green2); }
+    .document-title {
+      color: #16442e;
+      font-size: 25px;
+      margin-top: 20px;
+    }
 
-.result {
-  display: none;
-  margin-top: 14px;
-  padding: 14px;
-  border-radius: 8px;
-  overflow-wrap: anywhere;
-  font-size: 14px;
-}
+    .document-body {
+      text-align: right;
+      margin-top: 35px;
+      font-size: 17px;
+    }
 
-.result.success, .result.error, .result.info { display: block; }
+    .document-seal {
+      margin-top: 50px;
+      border-top: 1px solid #c4aa69;
+      padding-top: 15px;
+    }
 
-.success { background: #e5f5e9; color: #18552b; }
-.error { background: #fde9e7; color: #8a241d; }
-.info { background: #e8f0f8; color: #234c70; }
-
-.result h3, .result h4 { margin-top: 5px; }
-
-.status-badge {
-  display: inline-block;
-  border-radius: 20px;
-  padding: 4px 12px;
-  background: #eee;
-  font-weight: bold;
-}
-
-.document-link {
-  display: inline-block;
-  margin-top: 12px;
-  padding: 10px 14px;
-  border-radius: 8px;
-  background: var(--green);
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.demo-doc {
-  border: 1px dashed var(--gold);
-  border-radius: 12px;
-  padding: 15px;
-  margin-top: 15px;
-  background: #fffdf7;
-}
-
-.demo-doc strong { color: var(--green); }
-
-footer {
-  background: #0b261a;
-  color: #e6e0ce;
-  text-align: center;
-  padding: 25px 15px;
-  margin-top: 38px;
-  border-top: 3px solid var(--gold);
-  font-size: 13px;
-}
-
-footer strong { color: var(--gold); }
-
-@media (max-width: 760px) {
-  .grid { grid-template-columns: 1fr; }
-  .services { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .hero { padding: 22px; }
-  .hero h2 { font-size: 24px; }
-}
-</style>
+    @media (max-width: 600px) {
+      header h1 { font-size: 22px; }
+      .card { padding: 18px; }
+      nav a { margin: 4px 7px; }
+    }
+  </style>
 </head>
 
 <body>
-
 <header>
-  <div class="header-inner">
-    <div class="brand">
-      <div class="emblem">♔</div>
-      <div>
-        <h1 data-ar="مملكة PeaceLand"
-            data-en="Kingdom of PeaceLand">مملكة PeaceLand</h1>
-        <p data-ar="البوابة التجريبية للمواطنين"
-           data-en="Demonstration Citizen Portal">البوابة التجريبية للمواطنين</p>
-      </div>
-    </div>
-    <button id="languageButton" type="button">English</button>
-  </div>
+  <div class="crown">♛</div>
+  <h1>بوابة المواطن</h1>
+  <p>مملكة PeaceLand</p>
+  <p>خدمات المواطنين ومتابعة المطالب</p>
 </header>
 
-<main>
+<nav>
+  <a href="#home">الرئيسية</a>
+  <a href="#apply">تقديم مطلب</a>
+  <a href="#track">متابعة مطلب</a>
+</nav>
 
-  <section class="hero">
-    <h2 data-ar="بوابة المواطنين" data-en="Citizen Portal">
-      بوابة المواطنين
-    </h2>
-    <p data-ar="قدّم مطلبك وتابع حالته واطّلع على ردّ الإدارة والوثيقة عند صدورها."
-       data-en="Submit an application, track its status, and view the administration's response and document when available.">
-      قدّم مطلبك وتابع حالته واطّلع على ردّ الإدارة والوثيقة عند صدورها.
+<main id="home">
+  <section class="card">
+    <h2>مرحبًا بكم في بوابة المواطن</h2>
+    <p>
+      تتيح لكم هذه البوابة تقديم المطالب ومتابعة وضعيتها إلكترونيًا،
+      والاطلاع على ردّ الإدارة عند صدوره.
     </p>
-  </section>
-
-  <div class="notice"
-       data-ar="تنبيه: PeaceLand مملكة خيالية ومشروع تجريبي، وليست خدمة حكومية حقيقية. لا ترسل وثائق حقيقية أو معلومات حساسة."
-       data-en="Notice: PeaceLand is a fictional demonstration project, not a real government service. Do not submit real documents or sensitive information.">
-    تنبيه: PeaceLand مملكة خيالية ومشروع تجريبي، وليست خدمة حكومية حقيقية. لا ترسل وثائق حقيقية أو معلومات حساسة.
-  </div>
-
-  <section class="services">
-    <div class="service">
-      <span>🪪</span>
-      <h3 data-ar="بطاقة المواطن" data-en="Citizen Card">بطاقة المواطن</h3>
-      <p data-ar="نموذج تجريبي" data-en="Demo sample">نموذج تجريبي</p>
-    </div>
-
-    <div class="service">
-      <span>📘</span>
-      <h3 data-ar="جواز السفر" data-en="Passport">جواز السفر</h3>
-      <p data-ar="نموذج تجريبي" data-en="Demo sample">نموذج تجريبي</p>
-    </div>
-
-    <div class="service">
-      <span>🏛️</span>
-      <h3 data-ar="المواطنة" data-en="Citizenship">المواطنة</h3>
-      <p data-ar="تقديم مطلب" data-en="Apply">تقديم مطلب</p>
-    </div>
-
-    <div class="service">
-      <span>📨</span>
-      <h3 data-ar="المتابعة" data-en="Tracking">المتابعة</h3>
-      <p data-ar="بالرقم المرجعي والبريد" data-en="Reference and email">بالرقم المرجعي والبريد</p>
+    <div class="notice">
+      هذه بوابة تجريبية لمشروع PeaceLand الخيالي، وليست خدمة حكومية رسمية.
     </div>
   </section>
 
-  <div class="grid">
+  <section class="card" id="apply">
+    <h2>تقديم مطلب جديد</h2>
 
-    <section class="card">
-      <h2 data-ar="تقديم مطلب جديد" data-en="Submit an Application">
-        تقديم مطلب جديد
-      </h2>
+    <form id="applicationForm">
+      <label for="applicantName">الاسم الكامل</label>
+      <input id="applicantName" type="text" maxlength="150" required>
 
-      <p data-ar="أدخل المعلومات التالية لإرسال مطلب تجريبي."
-         data-en="Enter the following information to submit a demonstration application.">
-        أدخل المعلومات التالية لإرسال مطلب تجريبي.
-      </p>
+      <label for="applicantEmail">البريد الإلكتروني</label>
+      <input id="applicantEmail" type="email" maxlength="254" required>
 
-      <form id="applicationForm">
+      <label for="applicantCity">المدينة</label>
+      <input id="applicantCity" type="text" maxlength="100" required>
 
-        <label for="fullName" data-ar="الاسم الكامل" data-en="Full name">
-          الاسم الكامل
-        </label>
-        <input id="fullName" maxlength="100" autocomplete="name" required>
+      <label for="applicationType">نوع المطلب</label>
+      <select id="applicationType" required>
+        <option value="">اختر نوع المطلب</option>
+        <option value="طلب شهادة">طلب شهادة</option>
+        <option value="طلب إداري">طلب إداري</option>
+        <option value="طلب مساعدة">طلب مساعدة</option>
+        <option value="اقتراح">اقتراح</option>
+        <option value="شكوى">شكوى</option>
+        <option value="طلب آخر">طلب آخر</option>
+      </select>
 
-        <label for="email" data-ar="البريد الإلكتروني" data-en="Email address">
-          البريد الإلكتروني
-        </label>
-        <input id="email" type="email" maxlength="150"
-               autocomplete="email" required>
+      <label for="applicationDetails">تفاصيل المطلب</label>
+      <textarea id="applicationDetails"
+        maxlength="5000"
+        placeholder="اكتب تفاصيل المطلب هنا..."
+        required></textarea>
 
-        <label for="city" data-ar="المدينة" data-en="City">المدينة</label>
-        <input id="city" maxlength="100" required>
+      <button id="submitButton" type="submit">إرسال المطلب</button>
+    </form>
 
-        <label for="applicationType" data-ar="نوع المطلب" data-en="Application type">
-          نوع المطلب
-        </label>
+    <div id="submissionResult" class="result hidden" aria-live="polite"></div>
+  </section>
 
-        <select id="applicationType" required>
-          <option value="citizen" data-ar="بطاقة المواطن" data-en="Citizen card">بطاقة المواطن</option>
-          <option value="passport" data-ar="جواز سفر تجريبي" data-en="Demo passport">جواز سفر تجريبي</option>
-          <option value="citizenship" data-ar="طلب مواطنة" data-en="Citizenship application">طلب مواطنة</option>
-          <option value="general" data-ar="مطلب عام" data-en="General application">مطلب عام</option>
-        </select>
+  <section class="card" id="track">
+    <h2>متابعة مطلب سابق</h2>
 
-        <label for="details" data-ar="تفاصيل المطلب" data-en="Application details">
-          تفاصيل المطلب
-        </label>
-        <textarea id="details" maxlength="3000" required></textarea>
+    <p>أدخل رقم المطلب والبريد الإلكتروني المستعمل وقت تقديمه.</p>
 
-        <button class="primary" id="submitButton" type="submit"
-                data-ar="إرسال المطلب" data-en="Submit application">
-          إرسال المطلب
-        </button>
-      </form>
+    <form id="trackingForm">
+      <label for="trackingReference">رقم المطلب</label>
+      <input id="trackingReference"
+        type="text"
+        maxlength="30"
+        placeholder="مثال: PL-1234567890"
+        required>
 
-      <div id="applicationResult" class="result"
-           role="status" aria-live="polite"></div>
-    </section>
+      <label for="trackingEmail">البريد الإلكتروني</label>
+      <input id="trackingEmail"
+        type="email"
+        maxlength="254"
+        required>
 
-    <section class="card">
-      <h2 data-ar="متابعة مطلب" data-en="Track an Application">
-        متابعة مطلب
-      </h2>
+      <button id="trackingButton" type="submit">متابعة المطلب</button>
+    </form>
 
-      <p data-ar="أدخل الرقم المرجعي والبريد الإلكتروني المستعملين عند تقديم المطلب."
-         data-en="Enter the reference number and email address used to submit the application.">
-        أدخل الرقم المرجعي والبريد الإلكتروني المستعملين عند تقديم المطلب.
-      </p>
+    <div id="trackingResult" class="result hidden" aria-live="polite"></div>
+  </section>
 
-      <label for="trackingNumber" data-ar="الرقم المرجعي" data-en="Reference number">
-        الرقم المرجعي
-      </label>
-      <input id="trackingNumber" maxlength="40"
-             placeholder="PL-XXXXXXXX" autocomplete="off" required>
+  <!-- قالب PDF: مخفي في الصفحة ويظهر فقط عند إنشاء الوثيقة -->
+  <section id="pdfDocument" dir="rtl">
+    <div class="document-border">
+      <div style="font-size:48px;color:#b99a50;">♛</div>
+      <h2 style="border:0;text-align:center;">مملكة PeaceLand</h2>
+      <p>بوابة المواطن — وثيقة تجريبية</p>
 
-      <label for="trackingEmail" data-ar="البريد الإلكتروني" data-en="Email address">
-        البريد الإلكتروني
-      </label>
-      <input id="trackingEmail" type="email" maxlength="150"
-             autocomplete="email" required>
+      <h1 class="document-title">وثيقة إدارية تجريبية</h1>
 
-      <button class="primary" id="trackButton" type="button"
-              data-ar="متابعة المطلب" data-en="Track application">
-        متابعة المطلب
-      </button>
-
-      <div id="trackingResult" class="result"
-           role="status" aria-live="polite"></div>
-
-      <div class="demo-doc">
-        <strong data-ar="متابعة آمنة" data-en="Private tracking">
-          متابعة آمنة
-        </strong>
-        <p data-ar="تظهر نتيجة المتابعة عند تطابق الرقم المرجعي والبريد الإلكتروني مع البيانات المسجلة."
-           data-en="Tracking results appear only when the reference number and email match the stored application.">
-          تظهر نتيجة المتابعة عند تطابق الرقم المرجعي والبريد الإلكتروني مع البيانات المسجلة.
-        </p>
+      <div class="document-body">
+        <p><strong>الاسم الكامل:</strong> <span id="pdfName"></span></p>
+        <p><strong>رقم المطلب:</strong> <span id="pdfReference"></span></p>
+        <p><strong>نوع المطلب:</strong> <span id="pdfType"></span></p>
+        <p><strong>تاريخ تقديم المطلب:</strong> <span id="pdfCreatedAt"></span></p>
+        <p><strong>تاريخ الموافقة:</strong> <span id="pdfReviewedAt"></span></p>
+        <p><strong>وضعية المطلب:</strong> تمت الموافقة عليه في النظام التجريبي.</p>
       </div>
-    </section>
 
-  </div>
+      <div class="document-seal">
+        <p><strong>الإدارة التجريبية لمملكة PeaceLand</strong></p>
+        <p>هذه الوثيقة صادرة عن مشروع خيالي، ولا تمثل وثيقة رسمية أو قانونية.</p>
+        <p style="font-size:12px;color:#777;">PeaceLand Citizen Portal — Demonstration document</p>
+      </div>
+    </div>
+  </section>
 </main>
 
 <footer>
-  <strong data-ar="مملكة PeaceLand" data-en="Kingdom of PeaceLand">
-    مملكة PeaceLand
-  </strong><br>
-  <span data-ar="بوابة تجريبية للمواطنين — مشروع خيالي"
-        data-en="Demonstration Citizen Portal — Fictional Project">
-    بوابة تجريبية للمواطنين — مشروع خيالي
-  </span>
+  <strong>مملكة PeaceLand</strong>
+  <br>
+  <small>بوابة المواطن التجريبية © 2026</small>
 </footer>
 
 <script>
-"use strict";
+  // إعداد الاتصال بقاعدة البيانات
+  const SUPABASE_URL = "https://gfjlglniyaerdcjgefgi.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_UTEgMhPFF34jjCIeX39Nhg_8Tf_cWiX";
 
-const SUPABASE_URL = "https://gfjlglniyaerdcjgefgi.supabase.co";
-const SUPABASE_KEY = "sb_publishable_UTEgMhPFF34jjCIeX39Nhg_8Tf_cWiX";
-
-let currentLanguage = "ar";
-
-function tr(ar, en) {
-  return currentLanguage === "ar" ? ar : en;
-}
-
-function setLanguage(lang) {
-  currentLanguage = lang;
-  document.documentElement.lang = lang;
-  document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
-
-  document.querySelectorAll("[data-ar][data-en]").forEach(element => {
-    element.textContent = element.dataset[lang];
-  });
-
-  document.getElementById("languageButton").textContent =
-    lang === "ar" ? "English" : "العربية";
-}
-
-document.getElementById("languageButton").addEventListener("click", () => {
-  setLanguage(currentLanguage === "ar" ? "en" : "ar");
-});
-
-function showResult(element, message, type) {
-  element.textContent = message;
-  element.className = "result " + type;
-}
-
-function makeReference() {
-  const randomPart = crypto.randomUUID()
-    .replaceAll("-", "")
-    .slice(0, 10)
-    .toUpperCase();
-
-  return "PL-" + randomPart;
-}
-
-async function supabaseRequest(path, options = {}) {
-  return fetch(SUPABASE_URL + path, {
-    ...options,
-    headers: {
-      "apikey": SUPABASE_KEY,
-      "Authorization": "Bearer " + SUPABASE_KEY,
-      ...(options.body ? { "Content-Type": "application/json" } : {}),
-      ...options.headers
-    }
-  });
-}
-
-/* Submit a new application */
-document.getElementById("applicationForm").addEventListener("submit", async event => {
-  event.preventDefault();
-
-  const button = document.getElementById("submitButton");
-  const result = document.getElementById("applicationResult");
-
-  button.disabled = true;
-  showResult(
-    result,
-    tr("جارٍ إرسال المطلب...", "Submitting application..."),
-    "info"
+  const db = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
   );
 
-  const reference = makeReference();
+  const applicationForm = document.getElementById("applicationForm");
+  const trackingForm = document.getElementById("trackingForm");
+  const submissionResult = document.getElementById("submissionResult");
+  const trackingResult = document.getElementById("trackingResult");
 
-  const payload = {
-    reference_number: reference,
-    applicant_name: document.getElementById("fullName").value.trim(),
-    email: document.getElementById("email").value.trim(),
-    city: document.getElementById("city").value.trim(),
-    application_type: document.getElementById("applicationType").value,
-    details: document.getElementById("details").value.trim(),
-    status: "pending"
-  };
+  function showMessage(element, message, isError = false) {
+    element.classList.remove("hidden");
+    element.style.color = isError ? "#9b2020" : "#183c2b";
+    element.textContent = message;
+  }
 
-  try {
-    const response = await supabaseRequest(
-      "/rest/v1/citizen_applications",
-      {
-        method: "POST",
-        headers: { "Prefer": "return=minimal" },
-        body: JSON.stringify(payload)
-      }
+  function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, function (character) {
+      const entities = {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      };
+      return entities[character];
+    });
+  }
+
+  function formatDate(value) {
+    if (!value) return "غير متوفر";
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "غير متوفر";
+
+    return date.toLocaleDateString("fr-FR", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit"
+    });
+  }
+
+  function makeReference() {
+    const randomPart = Math.floor(
+      1000000000 + Math.random() * 9000000000
     );
+    return "PL-" + randomPart;
+  }
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("Submission error:", response.status, errorText);
-      throw new Error("HTTP " + response.status);
+  // إرسال مطلب جديد
+  applicationForm.addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    const button = document.getElementById("submitButton");
+    button.disabled = true;
+    button.textContent = "جاري الإرسال...";
+
+    submissionResult.classList.add("hidden");
+
+    const reference = makeReference();
+
+    const application = {
+      reference_number: reference,
+      applicant_name: document.getElementById("applicantName").value.trim(),
+      email: document.getElementById("applicantEmail").value.trim(),
+      city: document.getElementById("applicantCity").value.trim(),
+      application_type: document.getElementById("applicationType").value,
+      details: document.getElementById("applicationDetails").value.trim(),
+      status: "pending"
+    };
+
+    try {
+      const { error } = await db
+        .from("citizen_applications")
+        .insert([application]);
+
+      if (error) throw error;
+
+      showMessage(
+        submissionResult,
+        "تم إرسال المطلب بنجاح. احتفظ برقم المطلب التالي لمتابعته: " +
+        reference
+      );
+
+      submissionResult.innerHTML =
+        "<p>تم إرسال المطلب بنجاح.</p>" +
+        "<p>رقم المطلب: <strong>" + escapeHTML(reference) + "</strong></p>" +
+        "<p>احتفظ بالرقم وبالبريد الإلكتروني لمتابعة المطلب.</p>";
+
+      document.getElementById("trackingReference").value = reference;
+      document.getElementById("trackingEmail").value = application.email;
+
+      applicationForm.reset();
+    } catch (error) {
+      console.error("Application submission error:", error);
+
+      showMessage(
+        submissionResult,
+        "تعذّر إرسال المطلب. تأكّد من الاتصال بالإنترنت وإعدادات صلاحيات قاعدة البيانات. التفاصيل: " +
+        (error.message || "خطأ غير معروف"),
+        true
+      );
+    } finally {
+      button.disabled = false;
+      button.textContent = "إرسال المطلب";
     }
+  });
 
-    showResult(
-      result,
-      tr(
-        "تم إرسال المطلب بنجاح. رقمك المرجعي: " + reference +
-        ". احتفظ بالرقم والبريد الإلكتروني لمتابعة المطلب.",
-        "Application submitted. Your reference is: " + reference +
-        ". Keep this number and your email to track the application."
-      ),
-      "success"
-    );
+  // متابعة المطلب باستعمال رقم المطلب والبريد الإلكتروني
+  trackingForm.addEventListener("submit", async function (event) {
+    event.preventDefault();
 
-    document.getElementById("trackingNumber").value = reference;
-    document.getElementById("trackingEmail").value = payload.email;
+    const button = document.getElementById("trackingButton");
+    button.disabled = true;
+    button.textContent = "جاري البحث...";
+    trackingResult.classList.add("hidden");
 
-    document.getElementById("applicationForm").reset();
+    const reference = document
+      .getElementById("trackingReference")
+      .value.trim();
 
-  } catch (error) {
-    console.error(error);
+    const email = document
+      .getElementById("trackingEmail")
+      .value.trim();
 
-    showResult(
-      result,
-      tr(
-        "تعذّر إرسال المطلب. تحقّق من إعدادات Supabase والصلاحيات.",
-        "Could not submit the application. Check Supabase configuration and permissions."
-      ),
-      "error"
-    );
-  } finally {
-    button.disabled = false;
-  }
-});
-
-/* Track application securely through the restricted RPC function */
-document.getElementById("trackButton").addEventListener("click", async () => {
-  const reference = document.getElementById("trackingNumber")
-    .value.trim().toUpperCase();
-
-  const email = document.getElementById("trackingEmail")
-    .value.trim();
-
-  const result = document.getElementById("trackingResult");
-  const button = document.getElementById("trackButton");
-
-  if (!reference || !email) {
-    showResult(
-      result,
-      tr(
-        "أدخل الرقم المرجعي والبريد الإلكتروني.",
-        "Enter the reference number and email address."
-      ),
-      "error"
-    );
-    return;
-  }
-
-  button.disabled = true;
-
-  showResult(
-    result,
-    tr("جارٍ البحث عن المطلب...", "Searching for application..."),
-    "info"
-  );
-
-  try {
-    const response = await supabaseRequest(
-      "/rest/v1/rpc/track_citizen_application",
-      {
-        method: "POST",
-        body: JSON.stringify({
+    try {
+      const { data, error } = await db.rpc(
+        "track_citizen_application",
+        {
           p_reference: reference,
           p_email: email
-        })
-      }
-    );
+        }
+      );
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("Tracking error:", response.status, errorText);
-      throw new Error("Tracking request failed");
+      if (error) throw error;
+
+      if (!data || data.found !== true) {
+        showMessage(
+          trackingResult,
+          "لم يتم العثور على المطلب. تأكّد من رقم المطلب والبريد الإلكتروني.",
+          true
+        );
+        return;
+      }
+
+      displayApplication(data);
+    } catch (error) {
+      console.error("Tracking error:", error);
+
+      showMessage(
+        trackingResult,
+        "تعذّرت متابعة المطلب. تأكّد من إعداد دالة المتابعة في Supabase. التفاصيل: " +
+        (error.message || "خطأ غير معروف"),
+        true
+      );
+    } finally {
+      button.disabled = false;
+      button.textContent = "متابعة المطلب";
+    }
+  });
+
+  function displayApplication(data) {
+    const status = String(data.status || "pending").toLowerCase();
+
+    const statusLabels = {
+      pending: "قيد المراجعة",
+      approved: "تمت الموافقة",
+      rejected: "مرفوض",
+      under_review: "تحت المراجعة"
+    };
+
+    const statusLabel = statusLabels[status] || status;
+    const statusClass = ["approved", "rejected", "pending"].includes(status)
+      ? status
+      : "pending";
+
+    const adminResponse = data.admin_response
+      ? "<p><strong>رد الإدارة:</strong> " +
+        escapeHTML(data.admin_response) + "</p>"
+      : "";
+
+    trackingResult.innerHTML =
+      "<h3>نتيجة متابعة المطلب</h3>" +
+      "<p><strong>رقم المطلب:</strong> " +
+      escapeHTML(data.reference_number || "") + "</p>" +
+      "<p><strong>الوضعية:</strong> " +
+      '<span class="status ' + statusClass + '">' +
+      escapeHTML(statusLabel) + "</span></p>" +
+      adminResponse;
+
+    if (status === "approved") {
+      const downloadButton = document.createElement("button");
+      downloadButton.className = "gold-button";
+      downloadButton.textContent = "تحميل الوثيقة PDF";
+
+      downloadButton.addEventListener("click", function () {
+        generatePDF(data);
+      });
+
+      trackingResult.appendChild(downloadButton);
+
+      const note = document.createElement("p");
+      note.className = "notice";
+      note.textContent =
+        "هذه وثيقة تجريبية لمشروع PeaceLand، وليست وثيقة حكومية رسمية.";
+      trackingResult.appendChild(note);
+    } else if (status === "pending" || status === "under_review") {
+      const note = document.createElement("p");
+      note.textContent =
+        "المطلب ما زال قيد المعالجة. عاود التثبت لاحقًا.";
+      trackingResult.appendChild(note);
+    } else if (status === "rejected") {
+      const note = document.createElement("p");
+      note.textContent =
+        "تم رفض المطلب. راجع رد الإدارة لمعرفة التفاصيل.";
+      trackingResult.appendChild(note);
     }
 
-    const application = await response.json();
+    trackingResult.classList.remove("hidden");
+  }
 
-    if (!application || application.found !== true) {
-      showResult(
-        result,
-        tr(
-          "لم يتم العثور على المطلب. تحقّق من الرقم المرجعي والبريد الإلكتروني.",
-          "Application not found. Check the reference number and email address."
-        ),
-        "error"
-      );
+  // إنشاء ملف PDF عند الموافقة فقط
+  async function generatePDF(data) {
+    if (!data || String(data.status).toLowerCase() !== "approved") {
+      alert("لا يمكن إنشاء الوثيقة قبل الموافقة على المطلب.");
       return;
     }
 
-    result.replaceChildren();
-
-    const heading = document.createElement("h3");
-    heading.textContent = tr("نتيجة متابعة المطلب", "Application tracking result");
-    result.appendChild(heading);
-
-    const referenceLine = document.createElement("p");
-    referenceLine.textContent =
-      tr("الرقم المرجعي: ", "Reference: ") +
-      application.reference_number;
-    result.appendChild(referenceLine);
-
-    const statusLabels = {
-      pending: tr("قيد الانتظار", "Pending"),
-      under_review: tr("قيد الدراسة", "Under review"),
-      approved: tr("تم القبول", "Approved"),
-      rejected: tr("تم الرفض", "Rejected")
-    };
-
-    const statusLine = document.createElement("p");
-    statusLine.textContent =
-      tr("الحالة: ", "Status: ") +
-      (statusLabels[application.status] || application.status || "—");
-    result.appendChild(statusLine);
-
-    if (application.reviewed_at) {
-      const dateLine = document.createElement("p");
-      const date = new Date(application.reviewed_at);
-
-      dateLine.textContent =
-        tr("تاريخ المراجعة: ", "Review date: ") +
-        (Number.isNaN(date.getTime())
-          ? application.reviewed_at
-          : date.toLocaleString(currentLanguage === "ar" ? "ar" : "en"));
-      result.appendChild(dateLine);
+    if (typeof html2pdf === "undefined") {
+      alert("تعذّر تحميل أداة PDF. تأكّد من الاتصال بالإنترنت ثم أعد المحاولة.");
+      return;
     }
 
-    if (application.admin_response) {
-      const responseHeading = document.createElement("h4");
-      responseHeading.textContent = tr("ردّ الإدارة", "Administration response");
-      result.appendChild(responseHeading);
+    document.getElementById("pdfName").textContent =
+      data.applicant_name || "غير متوفر";
 
-      const responseText = document.createElement("p");
-      responseText.textContent = application.admin_response;
-      result.appendChild(responseText);
+    document.getElementById("pdfReference").textContent =
+      data.reference_number || "غير متوفر";
+
+    document.getElementById("pdfType").textContent =
+      data.application_type || "مطلب إداري";
+
+    document.getElementById("pdfCreatedAt").textContent =
+      formatDate(data.created_at);
+
+    document.getElementById("pdfReviewedAt").textContent =
+      formatDate(data.reviewed_at);
+
+    const element = document.getElementById("pdfDocument");
+    element.style.display = "block";
+
+    const filename = "PeaceLand-" +
+      String(data.reference_number || "document")
+        .replace(/[^a-zA-Z0-9_-]/g, "") +
+      ".pdf";
+
+    try {
+      await html2pdf()
+        .set({
+          margin: 8,
+          filename: filename,
+          image: { type: "jpeg", quality: 0.98 },
+          html2canvas: {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: "#ffffff"
+          },
+          jsPDF: {
+            unit: "mm",
+            format: "a4",
+            orientation: "portrait"
+          }
+        })
+        .from(element)
+        .save();
+    } catch (error) {
+      console.error("PDF generation error:", error);
+      alert("تعذّر إنشاء PDF. جرّب مرة أخرى.");
+    } finally {
+      element.style.display = "none";
     }
-
-    if (application.document_url) {
-      const documentLink = document.createElement("a");
-
-      documentLink.href = application.document_url;
-      documentLink.target = "_blank";
-      documentLink.rel = "noopener noreferrer";
-      documentLink.className = "document-link";
-      documentLink.textContent =
-        tr("عرض الوثيقة الرسمية", "View official document");
-
-      result.appendChild(documentLink);
-    } else if (application.status === "approved") {
-      const note = document.createElement("p");
-      note.textContent = tr(
-        "تم قبول المطلب، لكن لم تُرفق وثيقة بعد.",
-        "The application is approved, but no document has been attached yet."
-      );
-      result.appendChild(note);
-    }
-
-    result.className = "result success";
-
-  } catch (error) {
-    console.error(error);
-
-    showResult(
-      result,
-      tr(
-        "تعذّرت متابعة المطلب. تأكّد من إنشاء دالة المتابعة في Supabase ومن إعداد الصلاحيات.",
-        "Tracking failed. Check that the Supabase tracking function and permissions are configured."
-      ),
-      "error"
-    );
-  } finally {
-    button.disabled = false;
   }
-});
-
-setLanguage("ar");
 </script>
-
 </body>
 </html>
