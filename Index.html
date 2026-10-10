@@ -1,558 +1,846 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#103b2e">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#09251b">
+  <title>بوابة المواطنين | مملكة PeaceLand</title>
 
-<title>بوابة المواطن الملكية | PeaceLand</title>
+  <style>
+    :root {
+      --green: #09251b;
+      --green2: #103d2c;
+      --gold: #d9b568;
+      --cream: #f7f3e8;
+      --white: #ffffff;
+      --muted: #6c786f;
+      --border: #e5e5d9;
+    }
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-<style>
-:root {
-  --green: #103b2e;
-  --green2: #194b38;
-  --gold: #d7b56d;
-  --cream: #f6f2e8;
-  --white: #ffffff;
-  --text: #24372d;
-  --muted: #728076;
-  --border: #e3e6de;
-}
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  font-family: Arial, Tahoma, sans-serif;
-  background: var(--cream);
-  color: var(--text);
-}
-header {
-  color: white;
-  background: linear-gradient(125deg, #0a291f, #20563f);
-  border-bottom: 4px solid var(--gold);
-  padding: 22px 6%;
-}
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 15px;
-  flex-wrap: wrap;
-}
-.brand { display: flex; align-items: center; gap: 13px; }
-.crown { font-size: 38px; color: var(--gold); }
-.brand h1 { margin: 0; font-size: 23px; }
-.brand p { margin: 6px 0 0; font-size: 12px; color: #e8d9b1; }
-button, .btn {
-  border: none;
-  border-radius: 9px;
-  padding: 12px 18px;
-  font-weight: bold;
-  font-size: 14px;
-  cursor: pointer;
-}
-.language { background: var(--gold); color: var(--green); }
-.hero {
-  text-align: center;
-  max-width: 900px;
-  padding: 45px 20px 35px;
-  margin: auto;
-}
-.hero h2 { font-size: clamp(28px, 4vw, 43px); margin: 18px 0 12px; }
-.hero p { line-height: 1.9; color: var(--muted); }
-.badge {
-  display: inline-block;
-  padding: 8px 14px;
-  border-radius: 30px;
-  background: #eee2bd;
-  color: #5b481c;
-  font-size: 12px;
-}
-.container { max-width: 1100px; margin: auto; padding: 0 20px; }
-.section-title { color: var(--green); margin: 25px 0 18px; }
-.services {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 18px;
-}
-.card, .panel {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 23px;
-  box-shadow: 0 5px 18px #173a2909;
-}
-.icon { font-size: 35px; }
-.card h3 { color: var(--green); }
-.card p { color: var(--muted); line-height: 1.8; font-size: 14px; }
-.primary { color: white; background: var(--green); }
-.primary:hover { background: var(--green2); }
-.card button { width: 100%; margin-top: 10px; }
-.panel { margin-top: 25px; }
-.notice {
-  padding: 14px 16px;
-  border-right: 4px solid var(--gold);
-  border-radius: 8px;
-  background: #fbf6e8;
-  line-height: 1.8;
-  font-size: 13px;
-  margin: 20px 0;
-}
-form {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 15px;
-}
-label { display: block; font-weight: bold; font-size: 13px; margin-bottom: 7px; }
-input, select, textarea {
-  width: 100%;
-  border: 1px solid #d8dfd7;
-  border-radius: 9px;
-  padding: 12px;
-  font: inherit;
-  background: white;
-}
-textarea { min-height: 100px; resize: vertical; }
-.full { grid-column: 1 / -1; }
-.hidden { display: none !important; }
-.result {
-  padding: 15px;
-  margin-top: 18px;
-  background: #edf6ee;
-  border: 1px solid #c8dfcb;
-  border-radius: 10px;
-  line-height: 1.8;
-  overflow-wrap: anywhere;
-}
-.error {
-  background: #fff0ee;
-  border-color: #e8c5c0;
-}
-.small { font-size: 12px; color: var(--muted); line-height: 1.8; }
-footer {
-  margin-top: 45px;
-  padding: 28px 15px;
-  background: var(--green);
-  color: white;
-  text-align: center;
-  line-height: 2;
-}
-footer a { color: var(--gold); }
-a { color: var(--green); }
-@media(max-width:600px) {
-  form { grid-template-columns: 1fr; }
-  .full { grid-column: auto; }
-  .panel, .card { padding: 17px; }
-}
-</style>
+    body {
+      font-family: Arial, Tahoma, sans-serif;
+      background: var(--cream);
+      color: var(--green);
+      line-height: 1.7;
+    }
+
+    button, input, select, textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .topbar {
+      background: #061a13;
+      color: white;
+      text-align: center;
+      padding: 9px 15px;
+      font-size: 13px;
+    }
+
+    header {
+      background: var(--green);
+      color: white;
+      padding: 20px 6%;
+      border-bottom: 2px solid var(--gold);
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .emblem {
+      width: 55px;
+      height: 55px;
+      display: grid;
+      place-items: center;
+      border: 2px solid var(--gold);
+      border-radius: 50%;
+      color: var(--gold);
+      font-size: 27px;
+    }
+
+    .brand h1 {
+      font-size: 21px;
+      color: var(--gold);
+    }
+
+    .brand p {
+      font-size: 12px;
+      color: #e1e8e1;
+    }
+
+    .lang-btn {
+      background: transparent;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      border-radius: 7px;
+      padding: 9px 16px;
+    }
+
+    .hero {
+      background:
+        radial-gradient(ellipse at top, #1b543b 0%, transparent 65%),
+        linear-gradient(135deg, #09251b, #123e2c);
+      color: white;
+      text-align: center;
+      padding: 75px 20px 65px;
+    }
+
+    .hero .label {
+      color: var(--gold);
+      letter-spacing: 2px;
+      font-size: 12px;
+      margin-bottom: 15px;
+    }
+
+    .hero h2 {
+      font-size: clamp(30px, 5vw, 48px);
+      margin-bottom: 15px;
+    }
+
+    .hero h2 span {
+      color: var(--gold);
+    }
+
+    .hero p {
+      max-width: 650px;
+      margin: 0 auto 25px;
+      color: #e1e9e1;
+    }
+
+    .primary-btn {
+      display: inline-block;
+      border: none;
+      background: var(--gold);
+      color: #10271b;
+      padding: 13px 25px;
+      border-radius: 7px;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    main {
+      max-width: 1120px;
+      padding: 50px 20px;
+      margin: auto;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .section-title h2 {
+      font-size: 29px;
+      margin-bottom: 8px;
+    }
+
+    .section-title p {
+      color: var(--muted);
+    }
+
+    .services {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-bottom: 55px;
+    }
+
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 13px;
+      border: 1px solid var(--border);
+      box-shadow: 0 5px 20px #09251b08;
+    }
+
+    .card .icon {
+      font-size: 31px;
+      margin-bottom: 12px;
+    }
+
+    .card h3 {
+      margin-bottom: 8px;
+      font-size: 19px;
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 18px;
+    }
+
+    .small-btn {
+      background: var(--green);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 15px;
+      width: 100%;
+    }
+
+    .panel {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 28px;
+      margin-bottom: 30px;
+    }
+
+    .panel h2 {
+      margin-bottom: 7px;
+    }
+
+    .panel > p {
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 17px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d9dfd7;
+      border-radius: 7px;
+      background: #fff;
+      color: #15281e;
+    }
+
+    textarea {
+      min-height: 105px;
+      resize: vertical;
+    }
+
+    .submit-btn {
+      grid-column: 1 / -1;
+      background: var(--green);
+      color: white;
+      border: none;
+      padding: 13px;
+      border-radius: 7px;
+      font-weight: bold;
+    }
+
+    .notice {
+      background: #fff8e6;
+      border: 1px solid #e8d29b;
+      padding: 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      color: #5e4b21;
+      margin: 18px 0;
+    }
+
+    .result {
+      display: none;
+      margin-top: 18px;
+      padding: 17px;
+      border-radius: 8px;
+      background: #eaf7ed;
+      border: 1px solid #b8ddc0;
+      overflow-wrap: anywhere;
+    }
+
+    .result strong {
+      color: #164a28;
+    }
+
+    .tracking-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .tracking-row input {
+      flex: 1;
+      min-width: 180px;
+    }
+
+    .tracking-row button {
+      background: var(--gold);
+      border: none;
+      border-radius: 7px;
+      padding: 10px 20px;
+      font-weight: bold;
+    }
+
+    .tracking-result {
+      margin-top: 15px;
+      color: var(--green);
+      overflow-wrap: anywhere;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 35px;
+    }
+
+    .stat {
+      background: var(--green);
+      color: white;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 25px;
+      color: var(--gold);
+    }
+
+    footer {
+      background: #061a13;
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+      border-top: 2px solid var(--gold);
+    }
+
+    footer h3 {
+      color: var(--gold);
+      margin-bottom: 7px;
+    }
+
+    footer p {
+      color: #d7e0d8;
+      font-size: 13px;
+    }
+
+    .footer-note {
+      margin-top: 15px;
+      font-size: 11px;
+      color: #b6c5ba;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    @media (max-width: 600px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .field.full, .submit-btn {
+        grid-column: auto;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding: 55px 18px;
+      }
+
+      .panel {
+        padding: 20px;
+      }
+    }
+  </style>
 </head>
 
 <body>
-
-<header>
-  <nav>
-    <div class="brand">
-      <div class="crown">♛</div>
-      <div>
-        <h1 data-ar="بوابة المواطن الملكية"
-            data-en="Royal Citizen Portal">بوابة المواطن الملكية</h1>
-        <p>THE KINGDOM OF PEACELAND</p>
-      </div>
-    </div>
-    <button class="language" id="languageButton" onclick="toggleLanguage()">
-      English
-    </button>
-  </nav>
-</header>
-
-<section class="hero">
-  <span class="badge"
-        data-ar="الخدمات الإلكترونية الملكية"
-        data-en="Royal Digital Services">الخدمات الإلكترونية الملكية</span>
-
-  <h2 data-ar="مرحبًا بك في بوابة المواطن"
-      data-en="Welcome to the Citizen Portal">
-    مرحبًا بك في بوابة المواطن
-  </h2>
-
-  <p data-ar="فضاء إلكتروني لتقديم المطالب ومتابعتها والتواصل مع الإدارة الملكية."
-     data-en="An online portal for submitting applications, tracking their status and communicating with the Royal Administration.">
-    فضاء إلكتروني لتقديم المطالب ومتابعتها والتواصل مع الإدارة الملكية.
-  </p>
-</section>
-
-<main class="container">
-
-  <div class="notice">
-    <strong data-ar="تنبيه:"
-            data-en="Notice:">تنبيه:</strong>
-    <span data-ar="هذا مشروع غير رسمي. الخدمات والوثائق المعروضة تجريبية ولا تُعدّ وثائق هوية أو سفر حكومية."
-          data-en="This is an unofficial project. Services and documents are demonstrations, not government identity or travel documents.">
-      هذا مشروع غير رسمي. الخدمات والوثائق المعروضة تجريبية ولا تُعدّ وثائق هوية أو سفر حكومية.
-    </span>
+  <div class="topbar" data-ar="البوابة الرقمية الرسمية للمملكة الخيالية PeaceLand"
+       data-en="Digital portal for the fictional Kingdom of PeaceLand">
+    البوابة الرقمية الرسمية للمملكة الخيالية PeaceLand
   </div>
 
-  <h2 class="section-title"
-      data-ar="الخدمات المتاحة"
-      data-en="Available Services">الخدمات المتاحة</h2>
-
-  <section class="services">
-
-    <article class="card">
-      <div class="icon">🪪</div>
-      <h3 data-ar="بطاقة المواطن"
-          data-en="Citizen Card">بطاقة المواطن</h3>
-      <p data-ar="تقديم مطلب بطاقة رمزية ومتابعة الملف."
-         data-en="Submit a symbolic card application and track its status.">
-        تقديم مطلب بطاقة رمزية ومتابعة الملف.
-      </p>
-      <button class="primary" onclick="openForm('citizen_card')"
-              data-ar="تقديم مطلب"
-              data-en="Apply">تقديم مطلب</button>
-    </article>
-
-    <article class="card">
-      <div class="icon">📘</div>
-      <h3 data-ar="جواز السفر"
-          data-en="Passport">جواز السفر</h3>
-      <p data-ar="تسجيل مطلب وثيقة سفر رمزية ومتابعة حالته."
-         data-en="Submit a symbolic passport application and track its status.">
-        تسجيل مطلب وثيقة سفر رمزية ومتابعة حالته.
-      </p>
-      <button class="primary" onclick="openForm('passport')"
-              data-ar="تقديم مطلب"
-              data-en="Apply">تقديم مطلب</button>
-    </article>
-
-    <article class="card">
-      <div class="icon">👑</div>
-      <h3 data-ar="طلب الجنسية"
-          data-en="Citizenship Application">طلب الجنسية</h3>
-      <p data-ar="تقديم مطلب انتماء رمزي إلى المملكة."
-         data-en="Submit a symbolic membership application to the kingdom.">
-        تقديم مطلب انتماء رمزي إلى المملكة.
-      </p>
-      <button class="primary" onclick="openForm('citizenship')"
-              data-ar="تقديم مطلب"
-              data-en="Apply">تقديم مطلب</button>
-    </article>
-
-  </section>
-
-  <section id="applicationPanel" class="panel hidden">
-    <h2 id="formTitle" class="section-title">تقديم مطلب</h2>
-
-    <p class="small"
-       data-ar="استعمل بيانات تجريبية فقط. لا تدخل أرقام هوية حقيقية أو معلومات شخصية حساسة."
-       data-en="Use demonstration information only. Do not enter real ID numbers or sensitive personal information.">
-      استعمل بيانات تجريبية فقط. لا تدخل أرقام هوية حقيقية أو معلومات شخصية حساسة.
-    </p>
-
-    <form id="applicationForm">
-
-      <div>
-        <label for="firstName" data-ar="الاسم"
-               data-en="First name">الاسم</label>
-        <input id="firstName" maxlength="60" required autocomplete="off">
+  <header>
+    <div class="nav">
+      <div class="brand">
+        <div class="emblem">♛</div>
+        <div>
+          <h1 data-ar="مملكة PeaceLand" data-en="Kingdom of PeaceLand">مملكة PeaceLand</h1>
+          <p data-ar="السلام • الكرامة • المستقبل"
+             data-en="Peace • Dignity • Future">السلام • الكرامة • المستقبل</p>
+        </div>
       </div>
 
-      <div>
-        <label for="lastName" data-ar="اللقب"
-               data-en="Last name">اللقب</label>
-        <input id="lastName" maxlength="60" required autocomplete="off">
-      </div>
-
-      <div>
-        <label for="city" data-ar="المدينة"
-               data-en="City">المدينة</label>
-        <select id="city" required>
-          <option value="Royal Capital">العاصمة الملكية / Royal Capital</option>
-          <option value="Peace City">مدينة السلام / Peace City</option>
-          <option value="Golden City">المدينة الذهبية / Golden City</option>
-          <option value="Knowledge City">مدينة المعرفة / Knowledge City</option>
-          <option value="Coastal City">المدينة الساحلية / Coastal City</option>
-          <option value="Green Valley">الوادي الأخضر / Green Valley</option>
-          <option value="Industrial City">المدينة الصناعية / Industrial City</option>
-          <option value="Heritage City">مدينة التراث / Heritage City</option>
-        </select>
-      </div>
-
-      <div>
-        <label for="category" data-ar="نوع المطلب"
-               data-en="Application type">نوع المطلب</label>
-        <select id="category" required>
-          <option value="citizen_card">بطاقة المواطن / Citizen Card</option>
-          <option value="passport">جواز السفر / Passport</option>
-          <option value="citizenship">طلب الجنسية / Citizenship</option>
-        </select>
-      </div>
-
-      <div class="full">
-        <label for="details" data-ar="تفاصيل إضافية"
-               data-en="Additional details">تفاصيل إضافية</label>
-        <textarea id="details" maxlength="1000"></textarea>
-      </div>
-
-      <div class="full">
-        <label>
-          <input id="confirmation" type="checkbox"
-                 required style="width:auto">
-          <span data-ar="أوافق على تقديم معلومات تجريبية وأفهم أن الخدمة غير رسمية."
-                data-en="I agree to submit demonstration information and understand this service is unofficial.">
-            أوافق على تقديم معلومات تجريبية وأفهم أن الخدمة غير رسمية.
-          </span>
-        </label>
-      </div>
-
-      <div class="full">
-        <button class="primary" id="submitButton" type="submit"
-                style="width:100%"
-                data-ar="إرسال المطلب"
-                data-en="Submit Application">إرسال المطلب</button>
-      </div>
-
-    </form>
-
-    <div id="submitResult" class="result hidden" aria-live="polite"></div>
-  </section>
-
-  <section class="panel">
-    <h2 class="section-title"
-        data-ar="متابعة مطلب"
-        data-en="Track an Application">متابعة مطلب</h2>
-
-    <p class="small"
-       data-ar="أدخل رقم المطلب لمتابعة حالته. يلزم استكمال إعداد التحقق من هوية صاحب المطلب قبل تفعيل عرض الملفات الشخصية."
-       data-en="Enter the application reference to check its status. Applicant verification must be configured before enabling access to personal application details.">
-      أدخل رقم المطلب لمتابعة حالته. يلزم استكمال إعداد التحقق من هوية صاحب المطلب قبل تفعيل عرض الملفات الشخصية.
-    </p>
-
-    <div style="display:flex;gap:10px;flex-wrap:wrap">
-      <input id="trackingNumber" placeholder="PL-XXXXXXXXXX"
-             autocomplete="off" style="flex:1;min-width:200px">
-      <button class="primary" onclick="trackApplication()"
-              data-ar="التحقق من الحالة"
-              data-en="Check Status">التحقق من الحالة</button>
+      <button class="lang-btn" id="languageButton" type="button">
+        English
+      </button>
     </div>
+  </header>
 
-    <div id="trackingResult" class="result hidden" aria-live="polite"></div>
-  </section>
+  <section class="hero">
+    <div class="label" data-ar="بوابة الخدمات الرقمية"
+         data-en="DIGITAL CITIZEN SERVICES">بوابة الخدمات الرقمية</div>
 
-  <section class="panel">
-    <h2 class="section-title"
-        data-ar="حالة الاتصال"
-        data-en="Connection Status">حالة الاتصال</h2>
-    <p id="connectionStatus" aria-live="polite">
-      جاري التحقق من الاتصال...
+    <h2 data-ar="مرحبًا بك في <span>بوابة المواطنين</span>"
+        data-en="Welcome to the <span>Citizen Portal</span>">
+      مرحبًا بك في <span>بوابة المواطنين</span>
+    </h2>
+
+    <p data-ar="منصة تجريبية موحّدة لتقديم الطلبات ومتابعة الملفات والوصول إلى الخدمات الافتراضية لمملكة PeaceLand."
+       data-en="A demonstration platform to submit requests, track applications and explore the fictional services of PeaceLand.">
+      منصة تجريبية موحّدة لتقديم الطلبات ومتابعة الملفات والوصول إلى الخدمات الافتراضية لمملكة PeaceLand.
     </p>
+
+    <a href="#services" class="primary-btn"
+       data-ar="استكشف الخدمات" data-en="Explore services">
+      استكشف الخدمات
+    </a>
   </section>
 
-</main>
+  <main>
+    <section class="stats">
+      <div class="stat">
+        <strong>24/7</strong>
+        <span data-ar="وصول تجريبي" data-en="Demo access">وصول تجريبي</span>
+      </div>
+      <div class="stat">
+        <strong>4</strong>
+        <span data-ar="خدمات إلكترونية" data-en="Digital services">خدمات إلكترونية</span>
+      </div>
+      <div class="stat">
+        <strong>2</strong>
+        <span data-ar="لغتان متاحتان" data-en="Available languages">لغتان متاحتان</span>
+      </div>
+    </section>
 
-<footer>
-  <strong>♛ PEACELAND — ROYAL CITIZEN PORTAL</strong><br>
-  <a href="https://adem670.github.io/Kingdom-admin/"
-     data-ar="الإدارة الملكية"
-     data-en="Royal Administration">الإدارة الملكية</a>
-  &nbsp; | &nbsp;
-  <a href="https://endearing-axolotl-b97f7f.netlify.app/"
-     data-ar="الموقع الرئيسي"
-     data-en="Main Website">الموقع الرئيسي</a>
-</footer>
+    <section id="services">
+      <div class="section-title">
+        <h2 data-ar="الخدمات الإلكترونية" data-en="Online Services">
+          الخدمات الإلكترونية
+        </h2>
+        <p data-ar="اختر الخدمة التي ترغب في استكشافها"
+           data-en="Choose a service to explore">
+          اختر الخدمة التي ترغب في استكشافها
+        </p>
+      </div>
 
-<script>
-/*
-  ضع رابط مشروع Supabase ومفتاح anon/public الخاص به هنا.
-  لا تضع service_role key في هذا الملف.
-*/
-const SUPABASE_URL = "PASTE_YOUR_SUPABASE_PROJECT_URL_HERE";
-const SUPABASE_ANON_KEY = "PASTE_YOUR_SUPABASE_ANON_KEY_HERE";
+      <div class="services">
+        <article class="card">
+          <div class="icon">🪪</div>
+          <h3 data-ar="بطاقة المواطن التجريبية"
+              data-en="Demo Citizen Card">بطاقة المواطن التجريبية</h3>
+          <p data-ar="تقديم طلب تجريبي للحصول على بطاقة مواطن افتراضية."
+             data-en="Submit a demonstration request for a fictional citizen card.">
+            تقديم طلب تجريبي للحصول على بطاقة مواطن افتراضية.
+          </p>
+          <button class="small-btn" type="button" data-service="citizen"
+            data-ar="تقديم طلب" data-en="Apply now">تقديم طلب</button>
+        </article>
 
-let db = null;
-let currentLanguage = "ar";
-let currentType = "citizen_card";
+        <article class="card">
+          <div class="icon">🛂</div>
+          <h3 data-ar="جواز السفر التجريبي"
+              data-en="Demo Passport">جواز السفر التجريبي</h3>
+          <p data-ar="تسجيل طلب افتراضي لوثيقة سفر تجريبية غير صالحة للسفر."
+             data-en="Submit a fictional travel-document request. It is not valid for travel.">
+            تسجيل طلب افتراضي لوثيقة سفر تجريبية غير صالحة للسفر.
+          </p>
+          <button class="small-btn" type="button" data-service="passport"
+            data-ar="تقديم طلب" data-en="Apply now">تقديم طلب</button>
+        </article>
 
-const typeNames = {
-  citizen_card: { ar: "بطاقة المواطن", en: "Citizen Card" },
-  passport: { ar: "جواز السفر", en: "Passport" },
-  citizenship: { ar: "طلب الجنسية", en: "Citizenship Application" }
-};
+        <article class="card">
+          <div class="icon">🏛️</div>
+          <h3 data-ar="طلب الجنسية الافتراضية"
+              data-en="Fictional Citizenship">طلب الجنسية الافتراضية</h3>
+          <p data-ar="التعبير عن الرغبة في الانضمام إلى المجتمع الافتراضي للمملكة."
+             data-en="Express interest in joining the fictional kingdom community.">
+            التعبير عن الرغبة في الانضمام إلى المجتمع الافتراضي للمملكة.
+          </p>
+          <button class="small-btn" type="button" data-service="citizenship"
+            data-ar="ابدأ الطلب" data-en="Start request">ابدأ الطلب</button>
+        </article>
 
-const statusNames = {
-  pending: { ar: "في انتظار المراجعة", en: "Pending review" },
-  under_review: { ar: "قيد المراجعة", en: "Under review" },
-  needs_information: { ar: "يتطلب معلومات إضافية", en: "More information required" },
-  approved: { ar: "تمت الموافقة", en: "Approved" },
-  rejected: { ar: "مرفوض", en: "Rejected" }
-};
+        <article class="card">
+          <div class="icon">🔎</div>
+          <h3 data-ar="متابعة الطلبات" data-en="Track Requests">
+            متابعة الطلبات
+          </h3>
+          <p data-ar="التحقق من الطلبات التجريبية التي تم تسجيلها على هذا الجهاز."
+             data-en="Check demo requests saved in this browser on this device.">
+            التحقق من الطلبات التجريبية التي تم تسجيلها على هذا الجهاز.
+          </p>
+          <button class="small-btn" type="button"
+            onclick="document.getElementById('tracking').scrollIntoView({behavior:'smooth'})"
+            data-ar="تتبع ملف" data-en="Track a file">تتبع ملف</button>
+        </article>
+      </div>
+    </section>
 
-function toggleLanguage() {
-  currentLanguage = currentLanguage === "ar" ? "en" : "ar";
+    <section class="panel" id="application">
+      <h2 data-ar="تقديم طلب إلكتروني" data-en="Submit an Online Request">
+        تقديم طلب إلكتروني
+      </h2>
+      <p data-ar="املأ البيانات التالية لإنشاء طلب تجريبي."
+         data-en="Complete the form below to create a demo request.">
+        املأ البيانات التالية لإنشاء طلب تجريبي.
+      </p>
 
-  document.documentElement.lang = currentLanguage;
-  document.documentElement.dir = currentLanguage === "ar" ? "rtl" : "ltr";
+      <div class="notice"
+        data-ar="تنبيه: PeaceLand مملكة خيالية. هذه المنصة للعرض والتجربة فقط، ولا تصدر وثائق هوية أو جوازات سفر أو جنسية قانونية."
+        data-en="Notice: PeaceLand is fictional. This demonstration platform does not issue legally valid identity documents, passports or citizenship.">
+        تنبيه: PeaceLand مملكة خيالية. هذه المنصة للعرض والتجربة فقط، ولا تصدر وثائق هوية أو جوازات سفر أو جنسية قانونية.
+      </div>
 
-  document.querySelectorAll("[data-ar][data-en]").forEach(el => {
-    el.textContent = el.dataset[currentLanguage];
-  });
+      <form id="applicationForm" class="form-grid">
+        <div class="field">
+          <label for="fullName" data-ar="الاسم الكامل"
+                 data-en="Full name">الاسم الكامل</label>
+          <input id="fullName" name="fullName" maxlength="100"
+                 autocomplete="name" required>
+        </div>
 
-  document.getElementById("languageButton").textContent =
-    currentLanguage === "ar" ? "English" : "العربية";
+        <div class="field">
+          <label for="email" data-ar="البريد الإلكتروني"
+                 data-en="Email address">البريد الإلكتروني</label>
+          <input id="email" name="email" type="email" maxlength="150"
+                 autocomplete="email" required>
+        </div>
 
-  document.getElementById("formTitle").textContent =
-    typeNames[currentType][currentLanguage];
-}
+        <div class="field">
+          <label for="serviceType" data-ar="نوع الخدمة"
+                 data-en="Service type">نوع الخدمة</label>
+          <select id="serviceType" name="serviceType" required>
+            <option value="citizen" data-ar="بطاقة المواطن التجريبية"
+                    data-en="Demo Citizen Card">بطاقة المواطن التجريبية</option>
+            <option value="passport" data-ar="جواز السفر التجريبي"
+                    data-en="Demo Passport">جواز السفر التجريبي</option>
+            <option value="citizenship" data-ar="الجنسية الافتراضية"
+                    data-en="Fictional Citizenship">الجنسية الافتراضية</option>
+            <option value="general" data-ar="استفسار عام"
+                    data-en="General inquiry">استفسار عام</option>
+          </select>
+        </div>
 
-function openForm(type) {
-  currentType = type;
-  document.getElementById("category").value = type;
-  document.getElementById("formTitle").textContent =
-    typeNames[type][currentLanguage];
+        <div class="field">
+          <label for="city" data-ar="المدينة الافتراضية"
+                 data-en="Fictional city">المدينة الافتراضية</label>
+          <select id="city" name="city">
+            <option value="Royal Capital">Royal Capital</option>
+            <option value="Peace City">Peace City</option>
+            <option value="Golden City">Golden City</option>
+            <option value="Knowledge City">Knowledge City</option>
+            <option value="Coastal City">Coastal City</option>
+            <option value="Green Valley">Green Valley</option>
+            <option value="Industrial City">Industrial City</option>
+            <option value="Heritage City">Heritage City</option>
+          </select>
+        </div>
 
-  document.getElementById("applicationPanel").classList.remove("hidden");
-  document.getElementById("submitResult").classList.add("hidden");
+        <div class="field full">
+          <label for="details" data-ar="تفاصيل الطلب"
+                 data-en="Request details">تفاصيل الطلب</label>
+          <textarea id="details" name="details" maxlength="1000"
+            data-placeholder-ar="اكتب تفاصيل طلبك هنا..."
+            data-placeholder-en="Describe your request here..."
+            placeholder="اكتب تفاصيل طلبك هنا..."></textarea>
+        </div>
 
-  document.getElementById("applicationPanel")
-    .scrollIntoView({ behavior: "smooth" });
-}
+        <button class="submit-btn" type="submit"
+          data-ar="إرسال الطلب التجريبي"
+          data-en="Submit Demo Request">
+          إرسال الطلب التجريبي
+        </button>
+      </form>
 
-function showMessage(element, message, isError = false) {
-  element.textContent = message;
-  element.classList.remove("hidden");
-  element.classList.toggle("error", isError);
-}
+      <div class="result" id="applicationResult" aria-live="polite"></div>
+    </section>
 
-function initSupabase() {
-  const configured =
-    SUPABASE_URL.startsWith("https://") &&
-    !SUPABASE_URL.includes("PASTE_") &&
-    SUPABASE_ANON_KEY.length > 20 &&
-    !SUPABASE_ANON_KEY.includes("PASTE_");
+    <section class="panel" id="tracking">
+      <h2 data-ar="متابعة ملفك" data-en="Track Your Request">
+        متابعة ملفك
+      </h2>
+      <p data-ar="أدخل رقم الطلب الذي حصلت عليه عند الإرسال."
+         data-en="Enter the reference number you received when submitting your request.">
+        أدخل رقم الطلب الذي حصلت عليه عند الإرسال.
+      </p>
 
-  if (!configured) {
-    document.getElementById("connectionStatus").textContent =
-      currentLanguage === "ar"
-        ? "لم يتم إعداد الاتصال بعد. أضف رابط مشروع Supabase ومفتاح anon/public."
-        : "Connection is not configured yet. Add your Supabase URL and anon/public key.";
-    return;
-  }
+      <div class="tracking-row">
+        <input id="trackingNumber" maxlength="40"
+          data-placeholder-ar="مثال: PL-123456"
+          data-placeholder-en="Example: PL-123456"
+          placeholder="مثال: PL-123456">
+        <button type="button" id="trackButton"
+          data-ar="بحث" data-en="Search">بحث</button>
+      </div>
 
-  db = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
-  );
+      <div class="tracking-result" id="trackingResult" aria-live="polite"></div>
+    </section>
 
-  document.getElementById("connectionStatus").textContent =
-    currentLanguage === "ar"
-      ? "تم إعداد عميل الاتصال. جارٍ التحقق من صلاحية الوصول..."
-      : "Client configured. Checking database access...";
-}
+    <section class="panel">
+      <h2 data-ar="عن البوابة" data-en="About the Portal">عن البوابة</h2>
+      <p data-ar="تهدف هذه الواجهة إلى تقديم نموذج حديث للخدمات الحكومية الرقمية، مع تجربة سهلة عبر الهاتف والحاسوب."
+         data-en="This interface demonstrates a modern digital-government service experience, designed for phones and computers.">
+        تهدف هذه الواجهة إلى تقديم نموذج حديث للخدمات الحكومية الرقمية، مع تجربة سهلة عبر الهاتف والحاسوب.
+      </p>
+      <p data-ar="الطلبات محفوظة محليًا في المتصفح المستخدم فقط. لا تُرسل إلى إدارة أو قاعدة بيانات، ولا يمكن الاطلاع عليها من جهاز آخر."
+         data-en="Requests are stored locally in this browser only. They are not sent to an administration or database and cannot be viewed from another device.">
+        الطلبات محفوظة محليًا في المتصفح المستخدم فقط. لا تُرسل إلى إدارة أو قاعدة بيانات، ولا يمكن الاطلاع عليها من جهاز آخر.
+      </p>
+    </section>
+  </main>
 
-document.getElementById("applicationForm").addEventListener("submit", async event => {
-  event.preventDefault();
+  <footer>
+    <h3 data-ar="مملكة PeaceLand" data-en="Kingdom of PeaceLand">
+      مملكة PeaceLand
+    </h3>
+    <p data-ar="السلام • الكرامة • المستقبل"
+       data-en="Peace • Dignity • Future">
+      السلام • الكرامة • المستقبل
+    </p>
+    <p class="footer-note"
+       data-ar="مشروع خيالي تجريبي — جميع الخدمات والوثائق افتراضية."
+       data-en="Fictional demonstration project — all services and documents are simulated.">
+      مشروع خيالي تجريبي — جميع الخدمات والوثائق افتراضية.
+    </p>
+  </footer>
 
-  const result = document.getElementById("submitResult");
-  const button = document.getElementById("submitButton");
+  <script>
+    (() => {
+      "use strict";
 
-  if (!db) {
-    showMessage(
-      result,
-      currentLanguage === "ar"
-        ? "الموقع غير مربوط بقاعدة البيانات بعد. أضف إعدادات Supabase أولًا."
-        : "The portal is not connected to the database yet. Configure Supabase first.",
-      true
-    );
-    return;
-  }
+      const STORAGE_KEY = "peaceland_demo_requests_v1";
+      let currentLanguage = "ar";
 
-  const application = {
-    applicant_name: document.getElementById("firstName").value.trim(),
-    applicant_surname: document.getElementById("lastName").value.trim(),
-    city: document.getElementById("city").value,
-    application_type: document.getElementById("category").value,
-    details: document.getElementById("details").value.trim(),
-    status: "pending"
-  };
+      const translations = {
+        ar: {
+          saved: "تم تسجيل طلبك التجريبي بنجاح.",
+          reference: "رقم الطلب",
+          status: "الحالة",
+          pending: "قيد المراجعة التجريبية",
+          notFound: "لم يتم العثور على طلب بهذا الرقم في هذا المتصفح.",
+          storageError: "تعذر حفظ الطلب. تحقق من إعدادات المتصفح.",
+          chooseService: "تم اختيار الخدمة. أكمل بيانات الطلب أدناه.",
+          name: "الاسم",
+          service: "الخدمة",
+          city: "المدينة الافتراضية",
+          details: "التفاصيل",
+          emptyDetails: "لم تتم إضافة تفاصيل.",
+          submitted: "تاريخ التسجيل",
+          dateLocale: "ar-TN"
+        },
+        en: {
+          saved: "Your demo request has been recorded successfully.",
+          reference: "Reference number",
+          status: "Status",
+          pending: "Pending demo review",
+          notFound: "No request with that number was found in this browser.",
+          storageError: "Could not save the request. Check your browser settings.",
+          chooseService: "Service selected. Complete the application form below.",
+          name: "Name",
+          service: "Service",
+          city: "Fictional city",
+          details: "Details",
+          emptyDetails: "No details provided.",
+          submitted: "Submitted",
+          dateLocale: "en-GB"
+        }
+      };
 
-  if (!application.applicant_name || !application.applicant_surname) return;
+      const serviceNames = {
+        citizen: {
+          ar: "بطاقة المواطن التجريبية",
+          en: "Demo Citizen Card"
+        },
+        passport: {
+          ar: "جواز السفر التجريبي",
+          en: "Demo Passport"
+        },
+        citizenship: {
+          ar: "الجنسية الافتراضية",
+          en: "Fictional Citizenship"
+        },
+        general: {
+          ar: "استفسار عام",
+          en: "General inquiry"
+        }
+      };
 
-  button.disabled = true;
-  button.textContent = currentLanguage === "ar" ? "جارٍ الإرسال..." : "Submitting...";
+      function getRequests() {
+        try {
+          const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+          return Array.isArray(parsed) ? parsed : [];
+        } catch {
+          return [];
+        }
+      }
 
-  try {
-    const { data, error } = await db
-      .from("citizen_applications")
-      .insert(application)
-      .select("reference_number")
-      .single();
+      function setLanguage(language) {
+        currentLanguage = language;
+        document.documentElement.lang = language;
+        document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
 
-    if (error) throw error;
+        document.querySelectorAll("[data-ar][data-en]").forEach(element => {
+          element.innerHTML = element.dataset[language];
+        });
 
-    showMessage(
-      result,
-      currentLanguage === "ar"
-        ? "تم إرسال المطلب إلى قاعدة البيانات بنجاح. رقم المطلب: " +
-          data.reference_number +
-          ". احتفظ بالرقم للمتابعة."
-        : "Application submitted successfully. Reference: " +
-          data.reference_number + ". Save this reference."
-    );
+        document.querySelectorAll("[data-placeholder-ar][data-placeholder-en]")
+          .forEach(element => {
+            element.placeholder = element.dataset[
+              language === "ar" ? "placeholderAr" : "placeholderEn"
+            ];
+          });
 
-    document.getElementById("applicationForm").reset();
+        document.getElementById("languageButton").textContent =
+          language === "ar" ? "English" : "العربية";
+      }
 
-  } catch (error) {
-    console.error(error);
+      document.getElementById("languageButton").addEventListener("click", () => {
+        setLanguage(currentLanguage === "ar" ? "en" : "ar");
+      });
 
-    showMessage(
-      result,
-      currentLanguage === "ar"
-        ? "تعذر إرسال المطلب. تحقق من الجدول وصلاحيات Supabase. التفاصيل: " +
-          error.message
-        : "Could not submit the application. Check the Supabase table and policies. Details: " +
-          error.message,
-      true
-    );
-  } finally {
-    button.disabled = false;
-    button.textContent = currentLanguage === "ar"
-      ? "إرسال المطلب"
-      : "Submit Application";
-  }
-});
+      document.querySelectorAll("[data-service]").forEach(button => {
+        button.addEventListener("click", () => {
+          document.getElementById("serviceType").value = button.dataset.service;
+          document.getElementById("application").scrollIntoView({
+            behavior: "smooth"
+          });
+          document.getElementById("fullName").focus();
+        });
+      });
 
-async function trackApplication() {
-  const result = document.getElementById("trackingResult");
-  const ref = document.getElementById("trackingNumber")
-    .value.trim().toUpperCase();
+      function makeReference() {
+        const randomPart = Math.random().toString(36).slice(2, 8).toUpperCase();
+        return "PL-" + Date.now().toString().slice(-6) + "-" + randomPart;
+      }
 
-  if (!ref) {
-    showMessage(
-      result,
-      currentLanguage === "ar"
-        ? "أدخل رقم المطلب أولًا."
-        : "Enter an application reference first.",
-      true
-    );
-    return;
-  }
+      document.getElementById("applicationForm").addEventListener("submit", event => {
+        event.preventDefault();
 
-  /*
-    لا نسترجع ملفات شخصية بالرقم وحده.
-    يلزم إضافة آلية تحقق خاصة بصاحب المطلب قبل تفعيل المتابعة.
-  */
-  showMessage(
-    result,
-    currentLanguage === "ar"
-      ? "رقم المطلب: " + ref +
-        ". المتابعة الشخصية لم تُفعّل بعد؛ يلزم إعداد تحقق آمن من صاحب الملف."
-      : "Reference: " + ref +
-        ". Personal tracking is not enabled yet; secure applicant verification is required."
-  );
-}
+        const form = event.currentTarget;
+        if (!form.reportValidity()) return;
 
-initSupabase();
-</script>
+        const formData = new FormData(form);
+        const request = {
+          reference: makeReference(),
+          name: String(formData.get("fullName") || "").trim(),
+          email: String(formData.get("email") || "").trim(),
+          service: String(formData.get("serviceType") || "general"),
+          city: String(formData.get("city") || ""),
+          details: String(formData.get("details") || "").trim(),
+          status: "pending_demo_review",
+          submittedAt: new Date().toISOString()
+        };
 
+        if (!request.name || !request.email) return;
+
+        try {
+          const requests = getRequests();
+          requests.push(request);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(requests));
+        } catch {
+          document.getElementById("applicationResult").textContent =
+            translations[currentLanguage].storageError;
+          document.getElementById("applicationResult").style.display = "block";
+          return;
+        }
+
+        const t = translations[currentLanguage];
+        const result = document.getElementById("applicationResult");
+        result.replaceChildren();
+
+        const message = document.createElement("p");
+        message.textContent = t.saved;
+
+        const reference = document.createElement("p");
+        const referenceLabel = document.createElement("strong");
+        referenceLabel.textContent = t.reference + ": ";
+        reference.append(referenceLabel, document.createTextNode(request.reference));
+
+        const status = document.createElement("p");
+        const statusLabel = document.createElement("strong");
+        statusLabel.textContent = t.status + ": ";
+        status.append(statusLabel, document.createTextNode(t.pending));
+
+        result.append(message, reference, status);
+        result.style.display = "block";
+
+        document.getElementById("trackingNumber").value = request.reference;
+        document.getElementById("trackingResult").textContent = "";
+        form.reset();
+        result.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      });
+
+      document.getElementById("trackButton").addEventListener("click", () => {
+        const reference = document.getElementById("trackingNumber")
+          .value.trim().toUpperCase();
+        const result = document.getElementById("trackingResult");
+        result.replaceChildren();
+
+        if (!reference) {
+          result.textContent = translations[currentLanguage].notFound;
+          return;
+        }
+
+        const request = getRequests().find(item => item.reference === reference);
+
+        if (!request) {
+          result.textContent = translations[currentLanguage].notFound;
+          return;
+        }
+
+        const t = translations[currentLanguage];
+        const date = new Date(request.submittedAt).toLocaleString(t.dateLocale);
+
+        const rows = [
+          [t.reference, request.reference],
+          [t.name, request.name],
+          [t.service, serviceNames[request.service]?.[currentLanguage] || request.service],
+          [t.city, request.city],
+          [t.status, t.pending],
+          [t.submitted, date],
+          [t.details, request.details || t.emptyDetails]
+        ];
+
+        rows.forEach(([label, value]) => {
+          const paragraph = document.createElement("p");
+          const strong = document.createElement("strong");
+          strong.textContent = label + ": ";
+          paragraph.append(strong, document.createTextNode(value));
+          result.appendChild(paragraph);
+        });
+      });
+
+      setLanguage("ar");
+    })();
+  </script>
 </body>
 </html>
