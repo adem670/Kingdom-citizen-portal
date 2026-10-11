@@ -1,635 +1,733 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>بوابة المواطن | مملكة PeaceLand</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js"></script>
+<title>بوابة المواطن | مملكة PeaceLand</title>
 
-  <style>
-    :root {
-      --green: #123c2c;
-      --green2: #1e5a40;
-      --gold: #d5b46a;
-      --cream: #f8f5eb;
-      --white: #ffffff;
-      --text: #24352c;
-      --muted: #6c776f;
-    }
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    * { box-sizing: border-box; }
+<style>
+:root {
+  --green: #123d2b;
+  --green-light: #1d5a3e;
+  --gold: #d7b35a;
+  --cream: #f7f3e8;
+  --white: #ffffff;
+  --text: #24352b;
+  --border: #dce4dc;
+}
 
-    body {
-      margin: 0;
-      font-family: Arial, Tahoma, sans-serif;
-      background: var(--cream);
-      color: var(--text);
-      line-height: 1.8;
-    }
+* {
+  box-sizing: border-box;
+}
 
-    header {
-      background: linear-gradient(135deg, #103426, #205b40);
-      color: white;
-      text-align: center;
-      padding: 32px 16px;
-      border-bottom: 4px solid var(--gold);
-    }
+body {
+  margin: 0;
+  font-family: Tahoma, Arial, sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  line-height: 1.9;
+}
 
-    .crown {
-      font-size: 42px;
-      color: var(--gold);
-    }
+header {
+  background: linear-gradient(135deg, #123d2b, #081f16);
+  color: white;
+  text-align: center;
+  padding: 30px 15px;
+  border-bottom: 4px solid var(--gold);
+}
 
-    header h1 {
-      margin: 0;
-      font-size: 27px;
-    }
+.emblem {
+  width: 65px;
+  height: 65px;
+  margin: auto;
+  border: 2px solid var(--gold);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--gold);
+  font-size: 30px;
+}
 
-    header p { margin: 5px 0; }
+header h1 {
+  margin: 10px 0 0;
+}
 
-    nav {
-      background: #0b2b20;
-      text-align: center;
-      padding: 12px;
-    }
+header p {
+  margin: 5px 0 0;
+  color: #e8e1ca;
+}
 
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin: 0 12px;
-      display: inline-block;
-    }
+.container {
+  max-width: 1050px;
+  margin: 25px auto;
+  padding: 0 15px 35px;
+}
 
-    main {
-      max-width: 950px;
-      margin: 28px auto;
-      padding: 0 15px;
-    }
+.welcome {
+  background: white;
+  border-right: 5px solid var(--gold);
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 20px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  border-left: 1px solid var(--border);
+}
 
-    .card {
-      background: var(--white);
-      padding: 25px;
-      margin-bottom: 24px;
-      border-radius: 14px;
-      border: 1px solid #e5dfcf;
-      box-shadow: 0 5px 18px #183d2b0c;
-    }
+.layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+  gap: 20px;
+}
 
-    h2 {
-      color: var(--green);
-      border-right: 4px solid var(--gold);
-      padding-right: 12px;
-      margin-top: 0;
-    }
+.card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 22px;
+  box-shadow: 0 5px 20px rgba(18, 61, 43, 0.05);
+}
 
-    label {
-      display: block;
-      font-weight: bold;
-      margin: 12px 0 5px;
-    }
+h2 {
+  color: var(--green);
+  font-size: 22px;
+  margin-top: 0;
+}
 
-    input, select, textarea {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #cbd4cc;
-      border-radius: 8px;
-      font: inherit;
-      background: white;
-    }
+label {
+  display: block;
+  font-weight: bold;
+  margin: 12px 0 5px;
+}
 
-    textarea {
-      min-height: 110px;
-      resize: vertical;
-    }
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 12px;
+  font-family: inherit;
+  font-size: 15px;
+  border: 1px solid #cbd7cc;
+  border-radius: 9px;
+  background: white;
+}
 
-    button {
-      border: none;
-      border-radius: 8px;
-      padding: 12px 20px;
-      margin-top: 15px;
-      font: inherit;
-      font-weight: bold;
-      cursor: pointer;
-      background: var(--green);
-      color: white;
-    }
+textarea {
+  min-height: 115px;
+  resize: vertical;
+}
 
-    button:hover { background: var(--green2); }
+button {
+  width: 100%;
+  margin-top: 15px;
+  padding: 12px;
+  background: var(--green-light);
+  color: white;
+  border: none;
+  border-radius: 9px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
 
-    button:disabled {
-      opacity: .6;
-      cursor: wait;
-    }
+button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
 
-    .gold-button {
-      background: #b18b38;
-      color: #102d20;
-    }
+.message {
+  display: none;
+  margin-top: 15px;
+  padding: 12px;
+  border-radius: 9px;
+  overflow-wrap: anywhere;
+}
 
-    .notice {
-      background: #f4f0e3;
-      border-right: 4px solid var(--gold);
-      padding: 12px;
-      border-radius: 7px;
-      font-size: 14px;
-    }
+.message.show {
+  display: block;
+}
 
-    .result {
-      margin-top: 18px;
-      padding: 15px;
-      border-radius: 8px;
-      background: #f2f5f1;
-      overflow-wrap: anywhere;
-    }
+.success {
+  color: #15572b;
+  background: #e8f6eb;
+}
 
-    .hidden { display: none; }
+.error {
+  color: #982520;
+  background: #fff0ef;
+}
 
-    .status {
-      display: inline-block;
-      border-radius: 20px;
-      padding: 4px 12px;
-      font-weight: bold;
-      background: #e8e8e8;
-    }
+.info {
+  color: #174c78;
+  background: #edf4fb;
+}
 
-    .status.approved {
-      background: #d9f3df;
-      color: #176b35;
-    }
+.cities {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 9px;
+}
 
-    .status.rejected {
-      background: #ffe1e1;
-      color: #9b2020;
-    }
+.city {
+  background: #f8faf6;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 10px;
+  text-align: center;
+}
 
-    .status.pending {
-      background: #fff0c9;
-      color: #775400;
-    }
+.result {
+  display: none;
+  margin-top: 15px;
+  padding: 15px;
+  background: #fbfcf8;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
 
-    footer {
-      background: var(--green);
-      color: white;
-      text-align: center;
-      padding: 24px 15px;
-      margin-top: 40px;
-    }
+.result.show {
+  display: block;
+}
 
-    footer small { color: #e9e1cd; }
+.status {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 20px;
+  background: #fff0cf;
+  color: #785000;
+}
 
-    /* قالب الوثيقة التي يتم تحويلها إلى PDF */
-    #pdfDocument {
-      display: none;
-      width: 720px;
-      max-width: 100%;
-      padding: 35px;
-      background: white;
-      color: #183c2b;
-      font-family: Arial, Tahoma, sans-serif;
-      line-height: 1.8;
-    }
+.document {
+  margin-top: 20px;
+  padding: 25px;
+  background: white;
+  border: 4px double var(--gold);
+  border-radius: 8px;
+}
 
-    .document-border {
-      border: 4px double #b99a50;
-      padding: 28px;
-      min-height: 700px;
-      text-align: center;
-    }
+.document-header {
+  text-align: center;
+  color: var(--green);
+  padding-bottom: 15px;
+  border-bottom: 2px solid var(--gold);
+}
 
-    .document-title {
-      color: #16442e;
-      font-size: 25px;
-      margin-top: 20px;
-    }
+.document h3 {
+  text-align: center;
+  color: var(--green);
+  margin: 20px 0;
+}
 
-    .document-body {
-      text-align: right;
-      margin-top: 35px;
-      font-size: 17px;
-    }
+.document p {
+  overflow-wrap: anywhere;
+}
 
-    .document-seal {
-      margin-top: 50px;
-      border-top: 1px solid #c4aa69;
-      padding-top: 15px;
-    }
+.document-footer {
+  margin-top: 20px;
+  padding-top: 12px;
+  text-align: center;
+  border-top: 1px solid var(--gold);
+  font-size: 13px;
+}
 
-    @media (max-width: 600px) {
-      header h1 { font-size: 22px; }
-      .card { padding: 18px; }
-      nav a { margin: 4px 7px; }
-    }
-  </style>
+.small {
+  font-size: 13px;
+  color: #65736a;
+}
+
+footer {
+  background: var(--green);
+  color: white;
+  text-align: center;
+  padding: 18px;
+  border-top: 3px solid var(--gold);
+}
+
+@media (max-width: 500px) {
+  .card {
+    padding: 15px;
+  }
+
+  .document {
+    padding: 15px;
+  }
+}
+</style>
 </head>
 
 <body>
+
 <header>
-  <div class="crown">♛</div>
+  <div class="emblem">♔</div>
   <h1>بوابة المواطن</h1>
   <p>مملكة PeaceLand</p>
-  <p>خدمات المواطنين ومتابعة المطالب</p>
+  <p>الخدمات الإدارية للمواطنين</p>
 </header>
 
-<nav>
-  <a href="#home">الرئيسية</a>
-  <a href="#apply">تقديم مطلب</a>
-  <a href="#track">متابعة مطلب</a>
-</nav>
+<main class="container">
 
-<main id="home">
-  <section class="card">
-    <h2>مرحبًا بكم في بوابة المواطن</h2>
-    <p>
-      تتيح لكم هذه البوابة تقديم المطالب ومتابعة وضعيتها إلكترونيًا،
-      والاطلاع على ردّ الإدارة عند صدوره.
+  <div class="welcome">
+    <strong>مرحبًا بك في بوابة المواطن.</strong>
+    <br>
+    قدّم مطلبك، اختَر مدينتك، وتابع حالة المطلب باستعمال الرقم المرجعي.
+    عند الموافقة، ستظهر الوثيقة الإلكترونية مباشرة في هذه الصفحة.
+    <p class="small">
+      ملاحظة: PeaceLand مملكة خيالية، والوثائق المعروضة تجريبية وليست وثائق حكومية حقيقية.
     </p>
-    <div class="notice">
-      هذه بوابة تجريبية لمشروع PeaceLand الخيالي، وليست خدمة حكومية رسمية.
-    </div>
-  </section>
+  </div>
 
-  <section class="card" id="apply">
-    <h2>تقديم مطلب جديد</h2>
+  <div class="layout">
 
-    <form id="applicationForm">
-      <label for="applicantName">الاسم الكامل</label>
-      <input id="applicantName" type="text" maxlength="150" required>
+    <!-- تقديم مطلب جديد -->
 
-      <label for="applicantEmail">البريد الإلكتروني</label>
-      <input id="applicantEmail" type="email" maxlength="254" required>
+    <section class="card">
 
-      <label for="applicantCity">المدينة</label>
-      <input id="applicantCity" type="text" maxlength="100" required>
+      <h2>تقديم مطلب جديد</h2>
 
-      <label for="applicationType">نوع المطلب</label>
-      <select id="applicationType" required>
-        <option value="">اختر نوع المطلب</option>
-        <option value="طلب شهادة">طلب شهادة</option>
-        <option value="طلب إداري">طلب إداري</option>
-        <option value="طلب مساعدة">طلب مساعدة</option>
-        <option value="اقتراح">اقتراح</option>
-        <option value="شكوى">شكوى</option>
-        <option value="طلب آخر">طلب آخر</option>
-      </select>
+      <form id="applicationForm">
 
-      <label for="applicationDetails">تفاصيل المطلب</label>
-      <textarea id="applicationDetails"
-        maxlength="5000"
-        placeholder="اكتب تفاصيل المطلب هنا..."
-        required></textarea>
+        <label for="applicantName">الاسم واللقب</label>
+        <input
+          id="applicantName"
+          type="text"
+          minlength="2"
+          maxlength="150"
+          autocomplete="name"
+          required
+        >
 
-      <button id="submitButton" type="submit">إرسال المطلب</button>
-    </form>
+        <label for="email">البريد الإلكتروني</label>
+        <input
+          id="email"
+          type="email"
+          maxlength="254"
+          autocomplete="email"
+          required
+        >
 
-    <div id="submissionResult" class="result hidden" aria-live="polite"></div>
-  </section>
+        <label for="city">المدينة</label>
+        <select id="city" required>
+          <option value="">اختَر مدينتك</option>
+          <option value="العاصمة الملكية">العاصمة الملكية</option>
+          <option value="مدينة السلام">مدينة السلام</option>
+          <option value="المدينة الذهبية">المدينة الذهبية</option>
+          <option value="مدينة المعرفة">مدينة المعرفة</option>
+          <option value="المدينة الساحلية">المدينة الساحلية</option>
+          <option value="الوادي الأخضر">الوادي الأخضر</option>
+          <option value="المدينة الصناعية">المدينة الصناعية</option>
+          <option value="مدينة التراث">مدينة التراث</option>
+        </select>
 
-  <section class="card" id="track">
-    <h2>متابعة مطلب سابق</h2>
+        <label for="applicationType">نوع المطلب</label>
+        <select id="applicationType" required>
+          <option value="">اختَر نوع المطلب</option>
+          <option value="طلب جنسية">طلب جنسية</option>
+          <option value="طلب جواز سفر">طلب جواز سفر</option>
+          <option value="طلب هوية">طلب هوية</option>
+          <option value="شكوى">شكوى</option>
+          <option value="وثيقة إدارية">وثيقة إدارية</option>
+        </select>
 
-    <p>أدخل رقم المطلب والبريد الإلكتروني المستعمل وقت تقديمه.</p>
+        <label for="details">تفاصيل المطلب</label>
+        <textarea
+          id="details"
+          maxlength="5000"
+          placeholder="اكتب تفاصيل المطلب..."
+          required
+        ></textarea>
 
-    <form id="trackingForm">
-      <label for="trackingReference">رقم المطلب</label>
-      <input id="trackingReference"
-        type="text"
-        maxlength="30"
-        placeholder="مثال: PL-1234567890"
-        required>
+        <button id="submitButton" type="submit">
+          إرسال المطلب
+        </button>
 
-      <label for="trackingEmail">البريد الإلكتروني</label>
-      <input id="trackingEmail"
-        type="email"
-        maxlength="254"
-        required>
+      </form>
 
-      <button id="trackingButton" type="submit">متابعة المطلب</button>
-    </form>
+      <div id="submitMessage" class="message"></div>
 
-    <div id="trackingResult" class="result hidden" aria-live="polite"></div>
-  </section>
+      <p class="small">
+        احتفظ بالرقم المرجعي الذي يظهر بعد إرسال المطلب.
+      </p>
 
-  <!-- قالب PDF: مخفي في الصفحة ويظهر فقط عند إنشاء الوثيقة -->
-  <section id="pdfDocument" dir="rtl">
-    <div class="document-border">
-      <div style="font-size:48px;color:#b99a50;">♛</div>
-      <h2 style="border:0;text-align:center;">مملكة PeaceLand</h2>
-      <p>بوابة المواطن — وثيقة تجريبية</p>
+    </section>
 
-      <h1 class="document-title">وثيقة إدارية تجريبية</h1>
+    <!-- المدن ومتابعة المطلب -->
 
-      <div class="document-body">
-        <p><strong>الاسم الكامل:</strong> <span id="pdfName"></span></p>
-        <p><strong>رقم المطلب:</strong> <span id="pdfReference"></span></p>
-        <p><strong>نوع المطلب:</strong> <span id="pdfType"></span></p>
-        <p><strong>تاريخ تقديم المطلب:</strong> <span id="pdfCreatedAt"></span></p>
-        <p><strong>تاريخ الموافقة:</strong> <span id="pdfReviewedAt"></span></p>
-        <p><strong>وضعية المطلب:</strong> تمت الموافقة عليه في النظام التجريبي.</p>
+    <section class="card">
+
+      <h2>المدن المتاحة في المملكة</h2>
+
+      <div class="cities">
+        <div class="city">العاصمة الملكية</div>
+        <div class="city">مدينة السلام</div>
+        <div class="city">المدينة الذهبية</div>
+        <div class="city">مدينة المعرفة</div>
+        <div class="city">المدينة الساحلية</div>
+        <div class="city">الوادي الأخضر</div>
+        <div class="city">المدينة الصناعية</div>
+        <div class="city">مدينة التراث</div>
       </div>
 
-      <div class="document-seal">
-        <p><strong>الإدارة التجريبية لمملكة PeaceLand</strong></p>
-        <p>هذه الوثيقة صادرة عن مشروع خيالي، ولا تمثل وثيقة رسمية أو قانونية.</p>
-        <p style="font-size:12px;color:#777;">PeaceLand Citizen Portal — Demonstration document</p>
-      </div>
-    </div>
-  </section>
+      <hr style="border:0;border-top:1px solid #dce4dc;margin:25px 0">
+
+      <h2>متابعة المطلب</h2>
+
+      <form id="trackingForm">
+
+        <label for="referenceNumber">الرقم المرجعي</label>
+        <input
+          id="referenceNumber"
+          maxlength="40"
+          placeholder="مثال: PL-1234567890"
+          required
+        >
+
+        <label for="trackingEmail">البريد الإلكتروني</label>
+        <input
+          id="trackingEmail"
+          type="email"
+          maxlength="254"
+          required
+        >
+
+        <button id="trackingButton" type="submit">
+          متابعة حالة المطلب
+        </button>
+
+      </form>
+
+      <div id="trackingMessage" class="message"></div>
+
+      <div id="trackingResult" class="result"></div>
+
+    </section>
+
+  </div>
+
 </main>
 
 <footer>
-  <strong>مملكة PeaceLand</strong>
-  <br>
-  <small>بوابة المواطن التجريبية © 2026</small>
+  مملكة PeaceLand — بوابة المواطن التجريبية
 </footer>
 
 <script>
-  // إعداد الاتصال بقاعدة البيانات
-  const SUPABASE_URL = "https://gfjlglniyaerdcjgefgi.supabase.co";
-  const SUPABASE_KEY = "sb_publishable_UTEgMhPFF34jjCIeX39Nhg_8Tf_cWiX";
+(() => {
+
+  const SUPABASE_URL =
+    'https://gfjlglniyaerdcjgefgi.supabase.co';
+
+  const SUPABASE_KEY =
+    'sb_publishable_UTEgMhPFF34jjCIeX39Nhg_8Tf_cWiX';
 
   const db = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
   );
 
-  const applicationForm = document.getElementById("applicationForm");
-  const trackingForm = document.getElementById("trackingForm");
-  const submissionResult = document.getElementById("submissionResult");
-  const trackingResult = document.getElementById("trackingResult");
+  const $ = id => document.getElementById(id);
 
-  function showMessage(element, message, isError = false) {
-    element.classList.remove("hidden");
-    element.style.color = isError ? "#9b2020" : "#183c2b";
-    element.textContent = message;
+  function showMessage(element, text, type) {
+    element.textContent = text;
+    element.className = 'message show ' + type;
   }
 
   function escapeHTML(value) {
-    return String(value ?? "").replace(/[&<>"']/g, function (character) {
-      const entities = {
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#039;"
-      };
-      return entities[character];
-    });
+    return String(value ?? '').replace(/[&<>"']/g, char => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    })[char]);
   }
 
-  function formatDate(value) {
-    if (!value) return "غير متوفر";
-    const date = new Date(value);
-    if (Number.isNaN(date.getTime())) return "غير متوفر";
-
-    return date.toLocaleDateString("fr-FR", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit"
-    });
+  function createReferenceNumber() {
+    const random = Math.floor(100000 + Math.random() * 900000);
+    return 'PL-' + Date.now().toString().slice(-4) + random;
   }
 
-  function makeReference() {
-    const randomPart = Math.floor(
-      1000000000 + Math.random() * 9000000000
-    );
-    return "PL-" + randomPart;
+  function statusLabel(status) {
+    const labels = {
+      pending: 'قيد المراجعة',
+      in_review: 'قيد الدراسة',
+      processing: 'بصدد المعالجة',
+      approved: 'تمت الموافقة',
+      rejected: 'تم رفض المطلب'
+    };
+
+    return labels[String(status || '').toLowerCase()] ||
+      status ||
+      'غير محددة';
   }
 
-  // إرسال مطلب جديد
-  applicationForm.addEventListener("submit", async function (event) {
+  // إرسال المطلب
+
+  $('applicationForm').addEventListener('submit', async event => {
+
     event.preventDefault();
 
-    const button = document.getElementById("submitButton");
+    const button = $('submitButton');
+    const message = $('submitMessage');
+
     button.disabled = true;
-    button.textContent = "جاري الإرسال...";
+    message.className = 'message';
 
-    submissionResult.classList.add("hidden");
-
-    const reference = makeReference();
+    const reference_number = createReferenceNumber();
 
     const application = {
-      reference_number: reference,
-      applicant_name: document.getElementById("applicantName").value.trim(),
-      email: document.getElementById("applicantEmail").value.trim(),
-      city: document.getElementById("applicantCity").value.trim(),
-      application_type: document.getElementById("applicationType").value,
-      details: document.getElementById("applicationDetails").value.trim(),
-      status: "pending"
+      reference_number: reference_number,
+      applicant_name: $('applicantName').value.trim(),
+      email: $('email').value.trim().toLowerCase(),
+      city: $('city').value,
+      application_type: $('applicationType').value,
+      details: $('details').value.trim(),
+      status: 'pending'
     };
 
     try {
+
       const { error } = await db
-        .from("citizen_applications")
-        .insert([application]);
+        .from('citizen_applications')
+        .insert(application);
 
-      if (error) throw error;
+      if (error) {
+        throw error;
+      }
 
       showMessage(
-        submissionResult,
-        "تم إرسال المطلب بنجاح. احتفظ برقم المطلب التالي لمتابعته: " +
-        reference
+        message,
+        'تم إرسال المطلب بنجاح. رقمك المرجعي هو: ' +
+          reference_number +
+          '. احتفظ به لمتابعة الحالة.',
+        'success'
       );
 
-      submissionResult.innerHTML =
-        "<p>تم إرسال المطلب بنجاح.</p>" +
-        "<p>رقم المطلب: <strong>" + escapeHTML(reference) + "</strong></p>" +
-        "<p>احتفظ بالرقم وبالبريد الإلكتروني لمتابعة المطلب.</p>";
+      $('applicationForm').reset();
 
-      document.getElementById("trackingReference").value = reference;
-      document.getElementById("trackingEmail").value = application.email;
+      $('referenceNumber').value = reference_number;
+      $('trackingEmail').value = application.email;
 
-      applicationForm.reset();
     } catch (error) {
-      console.error("Application submission error:", error);
+
+      console.error(error);
 
       showMessage(
-        submissionResult,
-        "تعذّر إرسال المطلب. تأكّد من الاتصال بالإنترنت وإعدادات صلاحيات قاعدة البيانات. التفاصيل: " +
-        (error.message || "خطأ غير معروف"),
-        true
+        message,
+        'تعذّر إرسال المطلب. تأكّد من إعدادات قاعدة البيانات. ' +
+          (error.message || ''),
+        'error'
       );
+
     } finally {
+
       button.disabled = false;
-      button.textContent = "إرسال المطلب";
+
     }
+
   });
 
-  // متابعة المطلب باستعمال رقم المطلب والبريد الإلكتروني
-  trackingForm.addEventListener("submit", async function (event) {
+  // إنشاء الوثيقة داخل الموقع، وليس PDF
+
+  function createOnlineDocument(data) {
+
+    const applicantName = data.applicant_name || 'المواطن/ة';
+    const city = data.city || 'غير محددة';
+    const type = data.application_type || 'وثيقة إدارية';
+    const reference = data.reference_number || '';
+    const response = data.admin_response || '';
+
+    const date = data.reviewed_at
+      ? new Date(data.reviewed_at).toLocaleDateString('ar-TN')
+      : new Date().toLocaleDateString('ar-TN');
+
+    return `
+      <div class="document">
+
+        <div class="document-header">
+          <div style="font-size:30px">♔</div>
+          <h2>مملكة PeaceLand</h2>
+          <div>الإدارة الملكية</div>
+          <div>بوابة الخدمات الإدارية</div>
+        </div>
+
+        <h3>${escapeHTML(type)}</h3>
+
+        <p>
+          تشهد الإدارة الملكية التجريبية لمملكة PeaceLand بأن
+          المطلب المسجّل أدناه قد تمت الموافقة عليه.
+        </p>
+
+        <p>
+          <strong>الاسم واللقب:</strong>
+          ${escapeHTML(applicantName)}
+        </p>
+
+        <p>
+          <strong>المدينة:</strong>
+          ${escapeHTML(city)}
+        </p>
+
+        <p>
+          <strong>نوع المطلب:</strong>
+          ${escapeHTML(type)}
+        </p>
+
+        <p>
+          <strong>الرقم المرجعي:</strong>
+          ${escapeHTML(reference)}
+        </p>
+
+        <p>
+          <strong>تاريخ الإصدار:</strong>
+          ${escapeHTML(date)}
+        </p>
+
+        ${
+          response
+            ? `<p><strong>ملاحظة الإدارة:</strong> ${escapeHTML(response)}</p>`
+            : ''
+        }
+
+        <div class="document-footer">
+          وثيقة إلكترونية تجريبية صادرة داخل بوابة المواطن
+          لمملكة PeaceLand الخيالية.
+        </div>
+
+      </div>
+    `;
+  }
+
+  // متابعة المطلب
+
+  $('trackingForm').addEventListener('submit', async event => {
+
     event.preventDefault();
 
-    const button = document.getElementById("trackingButton");
+    const button = $('trackingButton');
+    const message = $('trackingMessage');
+    const result = $('trackingResult');
+
     button.disabled = true;
-    button.textContent = "جاري البحث...";
-    trackingResult.classList.add("hidden");
+    message.className = 'message';
+    result.className = 'result';
+    result.replaceChildren();
 
-    const reference = document
-      .getElementById("trackingReference")
-      .value.trim();
-
-    const email = document
-      .getElementById("trackingEmail")
-      .value.trim();
+    const reference = $('referenceNumber').value.trim();
+    const email = $('trackingEmail').value.trim().toLowerCase();
 
     try {
+
       const { data, error } = await db.rpc(
-        "track_citizen_application",
+        'track_citizen_application',
         {
           p_reference: reference,
           p_email: email
         }
       );
 
-      if (error) throw error;
+      if (error) {
+        throw error;
+      }
 
-      if (!data || data.found !== true) {
+      const record = Array.isArray(data) ? data[0] : data;
+
+      if (
+        !record ||
+        record.found === false ||
+        record.error ||
+        (!record.reference_number && record.found === undefined)
+      ) {
+
         showMessage(
-          trackingResult,
-          "لم يتم العثور على المطلب. تأكّد من رقم المطلب والبريد الإلكتروني.",
-          true
+          message,
+          'لم نعثر على مطلب مطابق. تأكّد من الرقم المرجعي والبريد الإلكتروني.',
+          'error'
         );
+
         return;
       }
 
-      displayApplication(data);
+      const status = String(record.status || '').toLowerCase();
+
+      result.innerHTML = `
+        <h3>نتيجة متابعة المطلب</h3>
+
+        <p>
+          <strong>الرقم المرجعي:</strong>
+          ${escapeHTML(record.reference_number || reference)}
+        </p>
+
+        <p>
+          <strong>الحالة:</strong>
+          <span class="status">
+            ${escapeHTML(statusLabel(status))}
+          </span>
+        </p>
+
+        ${
+          record.admin_response
+            ? `<p><strong>ردّ الإدارة:</strong> ${escapeHTML(record.admin_response)}</p>`
+            : ''
+        }
+      `;
+
+      if (status === 'approved') {
+
+        result.insertAdjacentHTML(
+          'beforeend',
+          createOnlineDocument(record)
+        );
+
+        showMessage(
+          message,
+          'تمت الموافقة على مطلبك. الوثيقة الإلكترونية تظهر أسفل نتيجة المتابعة.',
+          'success'
+        );
+
+      } else if (status === 'rejected') {
+
+        showMessage(
+          message,
+          'تم رفض المطلب. راجع ردّ الإدارة لمعرفة التفاصيل.',
+          'info'
+        );
+
+      } else {
+
+        showMessage(
+          message,
+          'مطلبك ما زال قيد المراجعة. يمكنك العودة لاحقًا لمتابعة الحالة.',
+          'info'
+        );
+
+      }
+
+      result.className = 'result show';
+
     } catch (error) {
-      console.error("Tracking error:", error);
+
+      console.error(error);
 
       showMessage(
-        trackingResult,
-        "تعذّرت متابعة المطلب. تأكّد من إعداد دالة المتابعة في Supabase. التفاصيل: " +
-        (error.message || "خطأ غير معروف"),
-        true
+        message,
+        'تعذّرت متابعة المطلب. تأكّد من إعداد دالة التتبع في Supabase. ' +
+          (error.message || ''),
+        'error'
       );
+
     } finally {
+
       button.disabled = false;
-      button.textContent = "متابعة المطلب";
+
     }
+
   });
 
-  function displayApplication(data) {
-    const status = String(data.status || "pending").toLowerCase();
-
-    const statusLabels = {
-      pending: "قيد المراجعة",
-      approved: "تمت الموافقة",
-      rejected: "مرفوض",
-      under_review: "تحت المراجعة"
-    };
-
-    const statusLabel = statusLabels[status] || status;
-    const statusClass = ["approved", "rejected", "pending"].includes(status)
-      ? status
-      : "pending";
-
-    const adminResponse = data.admin_response
-      ? "<p><strong>رد الإدارة:</strong> " +
-        escapeHTML(data.admin_response) + "</p>"
-      : "";
-
-    trackingResult.innerHTML =
-      "<h3>نتيجة متابعة المطلب</h3>" +
-      "<p><strong>رقم المطلب:</strong> " +
-      escapeHTML(data.reference_number || "") + "</p>" +
-      "<p><strong>الوضعية:</strong> " +
-      '<span class="status ' + statusClass + '">' +
-      escapeHTML(statusLabel) + "</span></p>" +
-      adminResponse;
-
-    if (status === "approved") {
-      const downloadButton = document.createElement("button");
-      downloadButton.className = "gold-button";
-      downloadButton.textContent = "تحميل الوثيقة PDF";
-
-      downloadButton.addEventListener("click", function () {
-        generatePDF(data);
-      });
-
-      trackingResult.appendChild(downloadButton);
-
-      const note = document.createElement("p");
-      note.className = "notice";
-      note.textContent =
-        "هذه وثيقة تجريبية لمشروع PeaceLand، وليست وثيقة حكومية رسمية.";
-      trackingResult.appendChild(note);
-    } else if (status === "pending" || status === "under_review") {
-      const note = document.createElement("p");
-      note.textContent =
-        "المطلب ما زال قيد المعالجة. عاود التثبت لاحقًا.";
-      trackingResult.appendChild(note);
-    } else if (status === "rejected") {
-      const note = document.createElement("p");
-      note.textContent =
-        "تم رفض المطلب. راجع رد الإدارة لمعرفة التفاصيل.";
-      trackingResult.appendChild(note);
-    }
-
-    trackingResult.classList.remove("hidden");
-  }
-
-  // إنشاء ملف PDF عند الموافقة فقط
-  async function generatePDF(data) {
-    if (!data || String(data.status).toLowerCase() !== "approved") {
-      alert("لا يمكن إنشاء الوثيقة قبل الموافقة على المطلب.");
-      return;
-    }
-
-    if (typeof html2pdf === "undefined") {
-      alert("تعذّر تحميل أداة PDF. تأكّد من الاتصال بالإنترنت ثم أعد المحاولة.");
-      return;
-    }
-
-    document.getElementById("pdfName").textContent =
-      data.applicant_name || "غير متوفر";
-
-    document.getElementById("pdfReference").textContent =
-      data.reference_number || "غير متوفر";
-
-    document.getElementById("pdfType").textContent =
-      data.application_type || "مطلب إداري";
-
-    document.getElementById("pdfCreatedAt").textContent =
-      formatDate(data.created_at);
-
-    document.getElementById("pdfReviewedAt").textContent =
-      formatDate(data.reviewed_at);
-
-    const element = document.getElementById("pdfDocument");
-    element.style.display = "block";
-
-    const filename = "PeaceLand-" +
-      String(data.reference_number || "document")
-        .replace(/[^a-zA-Z0-9_-]/g, "") +
-      ".pdf";
-
-    try {
-      await html2pdf()
-        .set({
-          margin: 8,
-          filename: filename,
-          image: { type: "jpeg", quality: 0.98 },
-          html2canvas: {
-            scale: 2,
-            useCORS: true,
-            backgroundColor: "#ffffff"
-          },
-          jsPDF: {
-            unit: "mm",
-            format: "a4",
-            orientation: "portrait"
-          }
-        })
-        .from(element)
-        .save();
-    } catch (error) {
-      console.error("PDF generation error:", error);
-      alert("تعذّر إنشاء PDF. جرّب مرة أخرى.");
-    } finally {
-      element.style.display = "none";
-    }
-  }
+})();
 </script>
+
 </body>
 </html>
