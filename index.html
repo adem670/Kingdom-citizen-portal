@@ -498,10 +498,10 @@ footer {
        * أسماء المعاملات مطابقة للدالة الموجودة في Supabase:
        * track_citizen_application(p_reference_number text, p_email text)
        */
-      const { data, error } = await db.rpc('track_citizen_application', {
-        p_reference_number: reference,
-        p_email: email
-      });
+      const { data, error } = await db.rpc('track_citizen_application_full', {
+  p_reference_number: reference,
+  p_email: email
+});
 
       if (error) throw error;
 
