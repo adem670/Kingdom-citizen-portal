@@ -19,9 +19,7 @@
   --border: #dce4dc;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
@@ -51,14 +49,8 @@ header {
   font-size: 30px;
 }
 
-header h1 {
-  margin: 10px 0 0;
-}
-
-header p {
-  margin: 5px 0 0;
-  color: #e8e1ca;
-}
+header h1 { margin: 10px 0 0; }
+header p { margin: 5px 0 0; color: #e8e1ca; }
 
 .container {
   max-width: 1050px;
@@ -103,9 +95,7 @@ label {
   margin: 12px 0 5px;
 }
 
-input,
-select,
-textarea {
+input, select, textarea {
   width: 100%;
   padding: 12px;
   font-family: inherit;
@@ -115,10 +105,7 @@ textarea {
   background: white;
 }
 
-textarea {
-  min-height: 115px;
-  resize: vertical;
-}
+textarea { min-height: 115px; resize: vertical; }
 
 button {
   width: 100%;
@@ -134,10 +121,7 @@ button {
   cursor: pointer;
 }
 
-button:disabled {
-  opacity: 0.6;
-  cursor: wait;
-}
+button:disabled { opacity: 0.6; cursor: wait; }
 
 .message {
   display: none;
@@ -147,24 +131,10 @@ button:disabled {
   overflow-wrap: anywhere;
 }
 
-.message.show {
-  display: block;
-}
-
-.success {
-  color: #15572b;
-  background: #e8f6eb;
-}
-
-.error {
-  color: #982520;
-  background: #fff0ef;
-}
-
-.info {
-  color: #174c78;
-  background: #edf4fb;
-}
+.message.show { display: block; }
+.success { color: #15572b; background: #e8f6eb; }
+.error { color: #982520; background: #fff0ef; }
+.info { color: #174c78; background: #edf4fb; }
 
 .cities {
   display: grid;
@@ -187,11 +157,10 @@ button:disabled {
   background: #fbfcf8;
   border: 1px solid var(--border);
   border-radius: 12px;
+  overflow-wrap: anywhere;
 }
 
-.result.show {
-  display: block;
-}
+.result.show { display: block; }
 
 .status {
   display: inline-block;
@@ -222,9 +191,7 @@ button:disabled {
   margin: 20px 0;
 }
 
-.document p {
-  overflow-wrap: anywhere;
-}
+.document p { overflow-wrap: anywhere; }
 
 .document-footer {
   margin-top: 20px;
@@ -234,10 +201,7 @@ button:disabled {
   font-size: 13px;
 }
 
-.small {
-  font-size: 13px;
-  color: #65736a;
-}
+.small { font-size: 13px; color: #65736a; }
 
 footer {
   background: var(--green);
@@ -248,13 +212,8 @@ footer {
 }
 
 @media (max-width: 500px) {
-  .card {
-    padding: 15px;
-  }
-
-  .document {
-    padding: 15px;
-  }
+  .card { padding: 15px; }
+  .document { padding: 15px; }
 }
 </style>
 </head>
@@ -273,8 +232,8 @@ footer {
   <div class="welcome">
     <strong>مرحبًا بك في بوابة المواطن.</strong>
     <br>
-    قدّم مطلبك، اختَر مدينتك، وتابع حالة المطلب باستعمال الرقم المرجعي.
-    عند الموافقة، ستظهر الوثيقة الإلكترونية مباشرة في هذه الصفحة.
+    قدّم مطلبك، واختَر مدينتك، وتابع حالة المطلب باستعمال الرقم المرجعي.
+    ستجد هنا ردّ الإدارة عند تسجيله في النظام.
     <p class="small">
       ملاحظة: PeaceLand مملكة خيالية، والوثائق المعروضة تجريبية وليست وثائق حكومية حقيقية.
     </p>
@@ -282,32 +241,18 @@ footer {
 
   <div class="layout">
 
-    <!-- تقديم مطلب جديد -->
-
     <section class="card">
-
       <h2>تقديم مطلب جديد</h2>
 
       <form id="applicationForm">
 
         <label for="applicantName">الاسم واللقب</label>
-        <input
-          id="applicantName"
-          type="text"
-          minlength="2"
-          maxlength="150"
-          autocomplete="name"
-          required
-        >
+        <input id="applicantName" type="text" minlength="2"
+               maxlength="150" autocomplete="name" required>
 
         <label for="email">البريد الإلكتروني</label>
-        <input
-          id="email"
-          type="email"
-          maxlength="254"
-          autocomplete="email"
-          required
-        >
+        <input id="email" type="email" maxlength="254"
+               autocomplete="email" required>
 
         <label for="city">المدينة</label>
         <select id="city" required>
@@ -333,28 +278,18 @@ footer {
         </select>
 
         <label for="details">تفاصيل المطلب</label>
-        <textarea
-          id="details"
-          maxlength="5000"
-          placeholder="اكتب تفاصيل المطلب..."
-          required
-        ></textarea>
+        <textarea id="details" maxlength="5000"
+                  placeholder="اكتب تفاصيل المطلب..." required></textarea>
 
-        <button id="submitButton" type="submit">
-          إرسال المطلب
-        </button>
-
+        <button id="submitButton" type="submit">إرسال المطلب</button>
       </form>
 
-      <div id="submitMessage" class="message"></div>
+      <div id="submitMessage" class="message" role="status"></div>
 
       <p class="small">
         احتفظ بالرقم المرجعي الذي يظهر بعد إرسال المطلب.
       </p>
-
     </section>
-
-    <!-- المدن ومتابعة المطلب -->
 
     <section class="card">
 
@@ -373,40 +308,26 @@ footer {
 
       <hr style="border:0;border-top:1px solid #dce4dc;margin:25px 0">
 
-      <h2>متابعة المطلب</h2>
+      <h2>متابعة المطلب والاطلاع على ردّ الإدارة</h2>
 
       <form id="trackingForm">
-
         <label for="referenceNumber">الرقم المرجعي</label>
-        <input
-          id="referenceNumber"
-          maxlength="40"
-          placeholder="مثال: PL-1234567890"
-          required
-        >
+        <input id="referenceNumber" maxlength="40"
+               placeholder="مثال: PL-1234567890" required>
 
-        <label for="trackingEmail">البريد الإلكتروني</label>
-        <input
-          id="trackingEmail"
-          type="email"
-          maxlength="254"
-          required
-        >
+        <label for="trackingEmail">البريد الإلكتروني المسجّل في المطلب</label>
+        <input id="trackingEmail" type="email" maxlength="254" required>
 
         <button id="trackingButton" type="submit">
           متابعة حالة المطلب
         </button>
-
       </form>
 
-      <div id="trackingMessage" class="message"></div>
-
-      <div id="trackingResult" class="result"></div>
+      <div id="trackingMessage" class="message" role="status"></div>
+      <div id="trackingResult" class="result" aria-live="polite"></div>
 
     </section>
-
   </div>
-
 </main>
 
 <footer>
@@ -415,18 +336,12 @@ footer {
 
 <script>
 (() => {
+  'use strict';
 
-  const SUPABASE_URL =
-    'https://gfjlglniyaerdcjgefgi.supabase.co';
+  const SUPABASE_URL = 'https://gfjlglniyaerdcjgefgi.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_UTEgMhPFF34jjCIeX39Nhg_8Tf_cWiX';
 
-  const SUPABASE_KEY =
-    'sb_publishable_UTEgMhPFF34jjCIeX39Nhg_8Tf_cWiX';
-
-  const db = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
-
+  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
   const $ = id => document.getElementById(id);
 
   function showMessage(element, text, type) {
@@ -445,8 +360,12 @@ footer {
   }
 
   function createReferenceNumber() {
-    const random = Math.floor(100000 + Math.random() * 900000);
-    return 'PL-' + Date.now().toString().slice(-4) + random;
+    if (window.crypto && window.crypto.randomUUID) {
+      return 'PL-' + window.crypto.randomUUID().replace(/-/g, '').slice(0, 12).toUpperCase();
+    }
+
+    return 'PL-' + Date.now().toString(36).toUpperCase() +
+      Math.random().toString(36).slice(2, 8).toUpperCase();
   }
 
   function statusLabel(status) {
@@ -458,15 +377,20 @@ footer {
       rejected: 'تم رفض المطلب'
     };
 
-    return labels[String(status || '').toLowerCase()] ||
-      status ||
-      'غير محددة';
+    return labels[String(status || '').toLowerCase()] || status || 'غير محددة';
   }
 
-  // إرسال المطلب
+  function formatDate(value) {
+    if (!value) return 'غير متوفر';
 
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return 'غير متوفر';
+
+    return date.toLocaleString('ar-TN');
+  }
+
+  // إرسال مطلب جديد
   $('applicationForm').addEventListener('submit', async event => {
-
     event.preventDefault();
 
     const button = $('submitButton');
@@ -475,12 +399,13 @@ footer {
     button.disabled = true;
     message.className = 'message';
 
-    const reference_number = createReferenceNumber();
+    const email = $('email').value.trim().toLowerCase();
+    const referenceNumber = createReferenceNumber();
 
     const application = {
-      reference_number: reference_number,
+      reference_number: referenceNumber,
       applicant_name: $('applicantName').value.trim(),
-      email: $('email').value.trim().toLowerCase(),
+      email,
       city: $('city').value,
       application_type: $('applicationType').value,
       details: $('details').value.trim(),
@@ -488,122 +413,72 @@ footer {
     };
 
     try {
-
       const { error } = await db
         .from('citizen_applications')
         .insert(application);
 
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
 
       showMessage(
         message,
-        'تم إرسال المطلب بنجاح. رقمك المرجعي هو: ' +
-          reference_number +
-          '. احتفظ به لمتابعة الحالة.',
+        'تم إرسال المطلب بنجاح. الرقم المرجعي: ' + referenceNumber +
+        '. احتفظ بالرقم والبريد الإلكتروني لمتابعة المطلب.',
         'success'
       );
 
       $('applicationForm').reset();
-
-      $('referenceNumber').value = reference_number;
-      $('trackingEmail').value = application.email;
+      $('referenceNumber').value = referenceNumber;
+      $('trackingEmail').value = email;
 
     } catch (error) {
-
-      console.error(error);
+      console.error('Submission error:', error);
 
       showMessage(
         message,
-        'تعذّر إرسال المطلب. تأكّد من إعدادات قاعدة البيانات. ' +
-          (error.message || ''),
+        'تعذّر إرسال المطلب. ' + (error.message || 'تحقّق من إعدادات قاعدة البيانات.'),
         'error'
       );
-
     } finally {
-
       button.disabled = false;
-
     }
-
   });
 
-  // إنشاء الوثيقة داخل الموقع، وليس PDF
-
+  // وثيقة تجريبية: لا تعرض إلا عند حالة الموافقة
   function createOnlineDocument(data) {
-
-    const applicantName = data.applicant_name || 'المواطن/ة';
-    const city = data.city || 'غير محددة';
-    const type = data.application_type || 'وثيقة إدارية';
-    const reference = data.reference_number || '';
-    const response = data.admin_response || '';
-
-    const date = data.reviewed_at
-      ? new Date(data.reviewed_at).toLocaleDateString('ar-TN')
-      : new Date().toLocaleDateString('ar-TN');
-
     return `
       <div class="document">
-
         <div class="document-header">
           <div style="font-size:30px">♔</div>
           <h2>مملكة PeaceLand</h2>
-          <div>الإدارة الملكية</div>
+          <div>الإدارة الملكية التجريبية</div>
           <div>بوابة الخدمات الإدارية</div>
         </div>
 
-        <h3>${escapeHTML(type)}</h3>
+        <h3>${escapeHTML(data.application_type || 'وثيقة إدارية')}</h3>
 
-        <p>
-          تشهد الإدارة الملكية التجريبية لمملكة PeaceLand بأن
-          المطلب المسجّل أدناه قد تمت الموافقة عليه.
-        </p>
+        <p>هذه وثيقة تجريبية مرتبطة بمطلب تمت الموافقة عليه داخل نظام PeaceLand الخيالي.</p>
 
-        <p>
-          <strong>الاسم واللقب:</strong>
-          ${escapeHTML(applicantName)}
-        </p>
-
-        <p>
-          <strong>المدينة:</strong>
-          ${escapeHTML(city)}
-        </p>
-
-        <p>
-          <strong>نوع المطلب:</strong>
-          ${escapeHTML(type)}
-        </p>
-
-        <p>
-          <strong>الرقم المرجعي:</strong>
-          ${escapeHTML(reference)}
-        </p>
-
-        <p>
-          <strong>تاريخ الإصدار:</strong>
-          ${escapeHTML(date)}
-        </p>
+        <p><strong>الاسم واللقب:</strong> ${escapeHTML(data.applicant_name || 'غير متوفر')}</p>
+        <p><strong>المدينة:</strong> ${escapeHTML(data.city || 'غير متوفرة')}</p>
+        <p><strong>نوع المطلب:</strong> ${escapeHTML(data.application_type || 'غير محدد')}</p>
+        <p><strong>الرقم المرجعي:</strong> ${escapeHTML(data.reference_number || '')}</p>
+        <p><strong>تاريخ المطلب:</strong> ${escapeHTML(formatDate(data.created_at))}</p>
 
         ${
-          response
-            ? `<p><strong>ملاحظة الإدارة:</strong> ${escapeHTML(response)}</p>`
+          data.admin_response
+            ? `<p><strong>ردّ الإدارة:</strong><br>${escapeHTML(data.admin_response)}</p>`
             : ''
         }
 
         <div class="document-footer">
-          وثيقة إلكترونية تجريبية صادرة داخل بوابة المواطن
-          لمملكة PeaceLand الخيالية.
+          وثيقة إلكترونية تجريبية لمملكة PeaceLand الخيالية، وليست وثيقة حكومية حقيقية.
         </div>
-
       </div>
     `;
   }
 
   // متابعة المطلب
-
   $('trackingForm').addEventListener('submit', async event => {
-
     event.preventDefault();
 
     const button = $('trackingButton');
@@ -619,34 +494,25 @@ footer {
     const email = $('trackingEmail').value.trim().toLowerCase();
 
     try {
+      /*
+       * أسماء المعاملات مطابقة للدالة الموجودة في Supabase:
+       * track_citizen_application(p_reference_number text, p_email text)
+       */
+      const { data, error } = await db.rpc('track_citizen_application', {
+        p_reference_number: reference,
+        p_email: email
+      });
 
-      const { data, error } = await db.rpc(
-        'track_citizen_application',
-        {
-          p_reference: reference,
-          p_email: email
-        }
-      );
-
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
 
       const record = Array.isArray(data) ? data[0] : data;
 
-      if (
-        !record ||
-        record.found === false ||
-        record.error ||
-        (!record.reference_number && record.found === undefined)
-      ) {
-
+      if (!record || !record.reference_number) {
         showMessage(
           message,
-          'لم نعثر على مطلب مطابق. تأكّد من الرقم المرجعي والبريد الإلكتروني.',
+          'لم نعثر على مطلب مطابق. تأكّد من الرقم المرجعي والبريد الإلكتروني المستعمل عند تقديم المطلب.',
           'error'
         );
-
         return;
       }
 
@@ -655,75 +521,69 @@ footer {
       result.innerHTML = `
         <h3>نتيجة متابعة المطلب</h3>
 
-        <p>
-          <strong>الرقم المرجعي:</strong>
-          ${escapeHTML(record.reference_number || reference)}
+        <p><strong>الرقم المرجعي:</strong>
+          ${escapeHTML(record.reference_number)}
         </p>
 
-        <p>
-          <strong>الحالة:</strong>
-          <span class="status">
-            ${escapeHTML(statusLabel(status))}
-          </span>
+        <p><strong>نوع المطلب:</strong>
+          ${escapeHTML(record.application_type || 'غير محدد')}
         </p>
 
-        ${
-          record.admin_response
-            ? `<p><strong>ردّ الإدارة:</strong> ${escapeHTML(record.admin_response)}</p>`
-            : ''
-        }
+        <p><strong>الحالة:</strong>
+          <span class="status">${escapeHTML(statusLabel(status))}</span>
+        </p>
+
+        <p><strong>تاريخ تقديم المطلب:</strong>
+          ${escapeHTML(formatDate(record.created_at))}
+        </p>
+
+        <div style="margin-top:18px;padding:15px;background:#edf4fb;border-right:4px solid #1d5a3e;border-radius:8px">
+          <h3 style="margin-top:0">💬 ردّ الإدارة</h3>
+          ${
+            record.admin_response && record.admin_response.trim()
+              ? `<p style="white-space:pre-wrap">${escapeHTML(record.admin_response)}</p>`
+              : '<p>لم يصدر ردّ من الإدارة بعد. يمكنك العودة لاحقًا لمتابعة مطلبك.</p>'
+          }
+        </div>
       `;
 
+      // لا نعرض الوثيقة التجريبية إلا إذا كانت الحالة approved
       if (status === 'approved') {
-
-        result.insertAdjacentHTML(
-          'beforeend',
-          createOnlineDocument(record)
-        );
+        result.insertAdjacentHTML('beforeend', createOnlineDocument(record));
 
         showMessage(
           message,
-          'تمت الموافقة على مطلبك. الوثيقة الإلكترونية تظهر أسفل نتيجة المتابعة.',
+          'تمت الموافقة على المطلب. تظهر نتيجة المتابعة وردّ الإدارة أدناه.',
           'success'
         );
-
       } else if (status === 'rejected') {
-
         showMessage(
           message,
           'تم رفض المطلب. راجع ردّ الإدارة لمعرفة التفاصيل.',
           'info'
         );
-
       } else {
-
         showMessage(
           message,
-          'مطلبك ما زال قيد المراجعة. يمكنك العودة لاحقًا لمتابعة الحالة.',
+          'تم العثور على المطلب. يمكنك الاطلاع على حالته وردّ الإدارة أدناه.',
           'info'
         );
-
       }
 
       result.className = 'result show';
 
     } catch (error) {
-
-      console.error(error);
+      console.error('Tracking error:', error);
 
       showMessage(
         message,
-        'تعذّرت متابعة المطلب. تأكّد من إعداد دالة التتبع في Supabase. ' +
-          (error.message || ''),
+        'تعذّرت متابعة المطلب. ' +
+        (error.message || 'تحقّق من إعداد دالة التتبع وصلاحياتها في Supabase.'),
         'error'
       );
-
     } finally {
-
       button.disabled = false;
-
     }
-
   });
 
 })();
